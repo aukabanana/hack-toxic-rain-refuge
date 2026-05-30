@@ -26,12 +26,24 @@ export const createCommunity = async (req: Request, res: Response) => {
   
   if (userId) {
     await prisma.communityMember.create({
-      data: { userId, communityId: community.id, role: 'SURVIVOR' },
+      data: { userId, communityId: community.id, role: 'RESOURCE_TRACKER' },
     });
   }
 
   return res.status(201).json(community);
 };
+
+// export const getMyCommunity = async (req: Request, res: Response) => {
+//   const { userId } = req.query as { userId: string };
+//   if (!userId) return res.status(400).json({ message: 'userId required' });
+
+//   const membership = await prisma.communityMember.findFirst({
+//     where: { userId },
+//     include: { community: true },
+//   });
+//   if (!membership) return res.status(404).json({ message: 'No community found' });
+//   return res.json(membership.community);
+// };
 
 export const getMyCommunity = async (req: Request, res: Response) => {
   const { userId } = req.query as { userId: string };
@@ -41,8 +53,20 @@ export const getMyCommunity = async (req: Request, res: Response) => {
     where: { userId },
     include: { community: true },
   });
-  if (!membership) return res.status(404).json({ message: 'No community found' });
-  return res.json(membership.community);
+  
+
+  if (!membership) {
+    return res.json({ 
+      community: null, 
+      role: 'SURVIVOR' 
+    });
+  }
+  
+
+  return res.json({ 
+    community: membership.community, 
+    role: membership.role 
+  });
 };
 
 export const getCommunityMembers = async (req: Request, res: Response) => {
