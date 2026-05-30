@@ -433,7 +433,6 @@ function LandingMap({
           );
         })}
 
-        {/* แสดง current user ทั้ง landing และ community mode */}
         <Marker
           position={[
             CURRENT_USER_LOCATION.latitude,
@@ -513,13 +512,13 @@ function LandingMap({
       </MapContainer>
 
       {isCommunityMode && isCreateMode && (
-        <div className="absolute left-1/2 top-4 z-[900] -translate-x-1/2 rounded-xl bg-(--color-navy) px-4 py-2 text-sm font-bold text-white shadow-lg">
+        <div className="absolute left-1/2 top-4 z-900 -translate-x-1/2 rounded-xl bg-(--color-navy) px-4 py-2 text-sm font-bold text-white shadow-lg">
           Click a location on the map
         </div>
       )}
 
       {isCommunityMode && (
-        <div className="absolute bottom-5 left-5 z-[900] flex flex-wrap gap-2">
+        <div className="absolute bottom-5 left-5 z-900 flex flex-wrap gap-2">
           <button
             type="button"
             onClick={() =>

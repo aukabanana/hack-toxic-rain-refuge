@@ -1,7 +1,6 @@
 import './index.css'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { DashboardRoute } from './modules/dashboard/routers/Dashboard.route.tsx'
 import App from './App.tsx'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
@@ -20,7 +19,7 @@ const router = createBrowserRouter([
         index: true,
         element: <LandingPage />,
       },
-      ...mapPage
+      ...mapPage,
       ...LoginpRoute,
       ...RegisterRoute,
       ...DashboardRoute

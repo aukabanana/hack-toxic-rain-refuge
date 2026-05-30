@@ -9,6 +9,8 @@ import commurouter from './modules/dashboard/routers/dashboard.route.js'
 
 import communityRouter from "./modules/communities/routers/community.routes.js";
 import mapRouter from "./modules/map/routers/map.routes.js";
+// import userRouter from "./modules/users/routers/user.routes.js";
+
 
 const app = express();
 
@@ -35,6 +37,7 @@ app.use(commurouter)
 
 app.use('/api/communities', communityRouter)
 app.use('/api/map', mapRouter)
+// app.use('/api/user', userRouter)
 
 // Test route
 app.get("/", (_req: Request, res: Response) => {

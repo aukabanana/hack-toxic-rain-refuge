@@ -72,7 +72,7 @@
     --line-height-title: 1.3;
     --line-height-body: 1.6;
     --line-height-description: 1.5;
-@import "tailwindcss";
+}
 
 :root {
     --color-primary: #061668;
