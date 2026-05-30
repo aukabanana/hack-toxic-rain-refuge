@@ -133,7 +133,7 @@ export const LoginPage1: React.FC = () => {
     setLoading(true);
     try {
       await loginUser({ username, password });
-      navigate('/resource-tracker');
+      navigate('/dashboard');
     } catch (err: unknown) {
       if (err instanceof Error) setError(err.message);
     } finally {

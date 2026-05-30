@@ -127,8 +127,8 @@ export const createResource = async (req: Request, res: Response) => {
   const id = req.params['id'];
   if (!id) return res.status(400).json({ message: 'Community ID required' });
 
-  const { name, type, unit } = req.body as { name: string; type: string; unit: string };
-  if (!name || !type || !unit)
+  const { name, type, amount } = req.body as { name: string; type: string; amount: number };
+  if (!name || !type || !amount)
     return res.status(400).json({ message: 'name, type, unit required' });
 
   const validTypes = Object.values(ResourceType);
@@ -136,7 +136,7 @@ export const createResource = async (req: Request, res: Response) => {
     return res.status(400).json({ message: 'Invalid resource type' });
 
   const resource = await prisma.resource.create({
-    data: { name, type: type as ResourceType, amount: 0, unit, communityId: id as string },
+    data: { name, type: type as ResourceType, amount, unit: '', communityId: id as string },
   });
   return res.status(201).json(resource);
 };

@@ -65,3 +65,4 @@ export const getToken = () => localStorage.getItem('token');
 export const getUsername = () => localStorage.getItem('username');
 export const getUserId = () => localStorage.getItem('userId');
 export const isAuthenticated = () => !!localStorage.getItem('token');
+

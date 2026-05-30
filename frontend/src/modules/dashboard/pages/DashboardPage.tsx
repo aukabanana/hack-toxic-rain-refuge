@@ -9,7 +9,13 @@
 // import ResourceCard from '../components/ResourceCard';
 // import ConfirmDeleteModal from '../components/ConfirmDelete';
 // import CreateResourceModal from '../components/CreateCard';
-// import { ResourceItem, ResourceType } from '../types/DashboardType';
+// import { ResourceType } from '../types/DashboardType';
+// import {
+//     getResources, createResource, updateResourceAmount, deleteResource,
+//     type Resource,
+// } from '../apis/dashboard.api';
+
+// const COMMUNITY_ID = '81e62fd2-8881-4229-a932-d799a1fda240';
 
 // const iconMapping: Record<ResourceType, LucideIcon> = {
 //     [ResourceType.FOOD]: Beef,
@@ -21,45 +27,95 @@
 //     [ResourceType.OTHER]: HelpCircle,
 // };
 
+// const unitMapping: Record<ResourceType, string> = {
+//     [ResourceType.FOOD]: 'portion',
+//     [ResourceType.WATER]: 'liter',
+//     [ResourceType.MEDICINE]: 'pack',
+//     [ResourceType.TOOL]: 'piece',
+//     [ResourceType.FUEL]: 'liter',
+//     [ResourceType.EQUIPMENT]: 'piece',
+//     [ResourceType.OTHER]: 'unit',
+// };
+
 // export const DashboardPage: React.FC = () => {
-//     const [resources, setResources] = useState<ResourceItem[]>(() => {
-//         try {
-//             const saved = localStorage.getItem('resources');
-//             return saved ? JSON.parse(saved) : [];
-//         } catch {
-//             return [];
-//         }
-//     });
-
-//     useEffect(() => {
-//         localStorage.setItem('resources', JSON.stringify(resources));
-//     }, [resources]);
-
 //     const navigate = useNavigate();
-
-
+//     const [resources, setResources] = useState<Resource[]>([]);
 //     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 //     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-//     const [selectedItem, setSelectedItem] = useState<ResourceItem | null>(null);
+//     const [selectedItem, setSelectedItem] = useState<Resource | null>(null);
 
-//     const daysToSurvive = 0;
+//     const daysToSurvive = React.useMemo(() => {
+//         const memberCount = 1; 
 
-//     const handleCreateResource = (name: string, type: ResourceType) => {
-//         const newItem: ResourceItem = {
-//             id: Date.now().toString(),
-//             name,
-//             type,
-//             quantity: 0,
+//         const totalWater = resources
+//             .filter(r => r.type === 'WATER')
+//             .reduce((sum, r) => sum + r.amount, 0);
+
+//         const totalFood = resources
+//             .filter(r => r.type === 'FOOD')
+//             .reduce((sum, r) => sum + r.amount, 0);
+
+//         const daysFromWater = totalWater / (memberCount * 2);
+//         const daysFromFood = totalFood / (memberCount * 3);
+
+//         const minDays = Math.min(daysFromWater, daysFromFood);
+        
+//         return Math.floor(minDays);
+//     }, [resources]);
+
+
+//     const resourceStats = React.useMemo(() => {
+//         if (resources.length === 0) {
+//             return {
+//                 max: { name: 'None', amount: 0 },
+//                 min: { name: 'None', amount: 0 }
+//             };
+//         }
+//         const maxItem = resources.reduce((prev, current) => 
+//             (prev.amount > current.amount) ? prev : current
+//         );
+//         const minItem = resources.reduce((prev, current) => 
+//             (prev.amount < current.amount) ? prev : current
+//         );
+//         return {
+//             max: { name: maxItem.name, amount: maxItem.amount },
+//             min: { name: minItem.name, amount: minItem.amount }
 //         };
-//         setResources(prev => [...prev, newItem]);
+//     }, [resources])
+
+//     useEffect(() => {
+//         getResources(COMMUNITY_ID)
+//             .then(setResources)
+//             .catch(err => console.error(err));
+//     }, []);
+
+
+//     const handleCreateResource = async (name: string, type: ResourceType) => {
+//         try {
+//             const unit = unitMapping[type];
+//             const newResource = await createResource(COMMUNITY_ID, name, type, unit);
+//             setResources(prev => [...prev, newResource]);
+//         } catch (err) {
+//             console.error(err);
+//         }
 //     };
 
-//     const handleIncrease = (id: string) => {
-//         setResources(prev => prev.map(item => item.id === id ? { ...item, quantity: item.quantity + 1 } : item));
+//     const handleIncrease = async (id: string) => {
+//         try {
+//             const updated = await updateResourceAmount(id, 'increase');
+//             setResources(prev => prev.map(item => item.id === id ? updated : item));
+//         } catch (err) {
+//             console.error(err);
+//         }
 //     };
 
-//     const handleDecrease = (id: string) => {
-//         setResources(prev => prev.map(item => item.id === id && item.quantity > 0 ? { ...item, quantity: item.quantity - 1 } : item));
+//     const handleDecrease = async (id: string) => {
+//         try {
+//             const updated = await updateResourceAmount(id, 'decrease');
+//             setResources(prev => prev.map(item => item.id === id ? updated : item));
+//         } catch (err) {
+//             console.error(err);
+//         }
 //     };
 
 //     const handleDeleteRequest = (id: string) => {
@@ -67,21 +123,27 @@
 //         if (item) {
 //             setSelectedItem(item);
 //             setIsDeleteModalOpen(true);
+            
 //         }
 //     };
 
-//     const handleConfirmDelete = () => {
+//     const handleConfirmDelete = async () => {
 //         if (selectedItem) {
-//             setResources(prev => prev.filter(item => item.id !== selectedItem.id));
-//             setIsDeleteModalOpen(false);
-//             setSelectedItem(null);
+//             try {
+//                 await deleteResource(selectedItem.id);
+//                 setResources(prev => prev.filter(item => item.id !== selectedItem.id));
+//                 setIsDeleteModalOpen(false);
+//                 setSelectedItem(null);
+//             } catch (err) {
+//                 console.error(err);
+//             }
 //         }
 //     };
 
 //     return (
 //         <div className="min-h-screen bg-gray-50 flex flex-col select-none relative">
 //             <div className="w-full h-16 relative z-[9999]">
-//                 <Navbar communityName="Community A" isAuthenticated={true} username="Username" onLogout={() => { }} />
+//                 <Navbar communityName="Community A" isAuthenticated={true} username="Username" />
 //             </div>
 
 //             <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col gap-6 pt-16 relative z-10">
@@ -92,13 +154,16 @@
 
 //                 <div className="flex flex-col gap-8">
 //                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mt-2">
-//                         <div className='flex flex-col'>
+//                         <div className="flex flex-col">
 //                             <h2 className="text-2xl sm:text-4xl font-extrabold text-[#0a1963]">
 //                                 The number of days we can survive : <span className="text-red-600 font-black">{daysToSurvive}</span>
 //                             </h2>
-//                             <h2 className="text-lg sm:text-xl text-[#0a1963]">
-//                                 The number of days we can survive : <span className="text-red-600 font-black">{daysToSurvive}</span>
-//                             </h2>
+//                             <p className='text-green-700 font-medium'>The number of maximum resource is: 
+//                                 <span className='underline font-black'>{resourceStats.max.name}</span> ({resourceStats.max.amount})
+//                             </p>
+//                             <p className='text-(--color-red) font-medium'>The number of minimum resource is: 
+//                                 <span className='underline font-black'>{resourceStats.min.name}</span> ({resourceStats.min.amount})
+//                             </p>
 //                         </div>
 
 //                         <button
@@ -116,8 +181,8 @@
 //                                 key={item.id}
 //                                 id={item.id}
 //                                 name={item.name}
-//                                 quantity={item.quantity}
-//                                 icon={iconMapping[item.type]}
+//                                 quantity={item.amount}
+//                                 icon={iconMapping[item.type as ResourceType]}
 //                                 onIncrease={handleIncrease}
 //                                 onDecrease={handleDecrease}
 //                                 onDelete={handleDeleteRequest}
@@ -146,6 +211,8 @@
 // export default DashboardPage;
 
 
+
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -157,6 +224,7 @@ import Navbar from '../../../components/Navbar';
 import ResourceCard from '../components/ResourceCard';
 import ConfirmDeleteModal from '../components/ConfirmDelete';
 import CreateResourceModal from '../components/CreateCard';
+import CommunityModal from '../components/MemberView'; // Import โมดอลรายชื่อสมาชิกเข้ามา
 import { ResourceType } from '../types/DashboardType';
 import {
     getResources, createResource, updateResourceAmount, deleteResource,
@@ -164,6 +232,7 @@ import {
 } from '../apis/dashboard.api';
 
 const COMMUNITY_ID = '81e62fd2-8881-4229-a932-d799a1fda240';
+const CURRENT_USER_ID = 'user-mock-12345'; // ตัวแปรจำลองไอดีผู้ใช้ปัจจุบันที่ล็อกอินอยู่
 
 const iconMapping: Record<ResourceType, LucideIcon> = {
     [ResourceType.FOOD]: Beef,
@@ -190,15 +259,54 @@ export const DashboardPage: React.FC = () => {
     const [resources, setResources] = useState<Resource[]>([]);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+    const [isCommuModalOpen, setIsCommuModalOpen] = useState(false); // เพิ่ม State สำหรับเปิดปิดโมดอลคอมมู
     const [selectedItem, setSelectedItem] = useState<Resource | null>(null);
 
-    const daysToSurvive = 0;
+    const daysToSurvive = React.useMemo(() => {
+        const memberCount = 1; 
+
+        const totalWater = resources
+            .filter(r => r.type === 'WATER')
+            .reduce((sum, r) => sum + r.amount, 0);
+
+        const totalFood = resources
+            .filter(r => r.type === 'FOOD')
+            .reduce((sum, r) => sum + r.amount, 0);
+
+        const daysFromWater = totalWater / (memberCount * 2);
+        const daysFromFood = totalFood / (memberCount * 3);
+
+        const minDays = Math.min(daysFromWater, daysFromFood);
+        
+        return Math.floor(minDays);
+    }, [resources]);
+
+
+    const resourceStats = React.useMemo(() => {
+        if (resources.length === 0) {
+            return {
+                max: { name: 'None', amount: 0 },
+                min: { name: 'None', amount: 0 }
+            };
+        }
+        const maxItem = resources.reduce((prev, current) => 
+            (prev.amount > current.amount) ? prev : current
+        );
+        const minItem = resources.reduce((prev, current) => 
+            (prev.amount < current.amount) ? prev : current
+        );
+        return {
+            max: { name: maxItem.name, amount: maxItem.amount },
+            min: { name: minItem.name, amount: minItem.amount }
+        };
+    }, [resources])
 
     useEffect(() => {
         getResources(COMMUNITY_ID)
             .then(setResources)
             .catch(err => console.error(err));
     }, []);
+
 
     const handleCreateResource = async (name: string, type: ResourceType) => {
         try {
@@ -233,6 +341,7 @@ export const DashboardPage: React.FC = () => {
         if (item) {
             setSelectedItem(item);
             setIsDeleteModalOpen(true);
+            
         }
     };
 
@@ -252,7 +361,13 @@ export const DashboardPage: React.FC = () => {
     return (
         <div className="min-h-screen bg-gray-50 flex flex-col select-none relative">
             <div className="w-full h-16 relative z-[9999]">
-                <Navbar communityName="Community A" isAuthenticated={true} username="Username" onLogout={() => { }} />
+                {/* ส่งฟังก์ชันเปิด Modal ไปให้ Navbar ทางพร็อพส์ onCommunityClick */}
+                <Navbar 
+                    communityName="Community A" 
+                    isAuthenticated={true} 
+                    username="Username" 
+                    onCommunityClick={() => setIsCommuModalOpen(true)}
+                />
             </div>
 
             <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col gap-6 pt-16 relative z-10">
@@ -267,6 +382,12 @@ export const DashboardPage: React.FC = () => {
                             <h2 className="text-2xl sm:text-4xl font-extrabold text-[#0a1963]">
                                 The number of days we can survive : <span className="text-red-600 font-black">{daysToSurvive}</span>
                             </h2>
+                            <p className='text-green-700 font-medium'>The number of maximum resource is: 
+                                <span className='underline font-black'>{resourceStats.max.name}</span> ({resourceStats.max.amount})
+                            </p>
+                            <p className='text-(--color-red) font-medium'>The number of minimum resource is: 
+                                <span className='underline font-black'>{resourceStats.min.name}</span> ({resourceStats.min.amount})
+                            </p>
                         </div>
 
                         <button
@@ -306,6 +427,14 @@ export const DashboardPage: React.FC = () => {
                 isOpen={isCreateModalOpen}
                 onClose={() => setIsCreateModalOpen(false)}
                 onCreate={handleCreateResource}
+            />
+
+            {/* ติดตั้ง CommunityModal ไว้ตรงนี้ */}
+            <CommunityModal 
+                isOpen={isCommuModalOpen}
+                onClose={() => setIsCommuModalOpen(false)}
+                currentUserId={CURRENT_USER_ID}
+                currentCommunityId={COMMUNITY_ID}
             />
         </div>
     );

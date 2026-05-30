@@ -27,7 +27,7 @@ app.use(
 );
 
 app.use(morgan("dev"));
-app.use(authrouter)
+app.use(('/auth'), authrouter)
 app.use(commurouter)
 
 // Test route
