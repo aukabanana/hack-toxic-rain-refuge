@@ -168,8 +168,8 @@ model MapMarker {
 model Mission {
   id    String @id @default(uuid())
   title String
-
   riskLevel RiskLevel      @default(UNKNOWN)
+  isCompleted Boolean   @default(false)
   urgency   MissionUrgency @default(LOW)
 
   communityId    String
