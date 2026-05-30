@@ -10,6 +10,8 @@ import commurouter from './modules/dashboard/routers/dashboard.route.js'
 
 import communityRouter from "./modules/communities/routers/community.routes.js";
 import mapRouter from "./modules/map/routers/map.routes.js";
+// import userRouter from "./modules/users/routers/user.routes.js";
+
 
 const app = express();
 const port = process.env.PORT;
@@ -27,6 +29,7 @@ app.use(commurouter)
 
 app.use('/api/communities', communityRouter)
 app.use('/api/map', mapRouter)
+// app.use('/api/user', userRouter)
 
 const CreateMissionSchema = zod.object({
   title: zod.string().min(3),
