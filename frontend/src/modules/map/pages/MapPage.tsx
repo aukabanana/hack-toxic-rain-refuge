@@ -3,6 +3,7 @@ import {
   useState,
 } from "react";
 
+import axios from "axios";
 import { LogOut } from "lucide-react";
 import {
   Navigate,
@@ -13,60 +14,93 @@ import LandingMap from "../components/LandingMap";
 import MapLegend from "../components/MapLegend";
 import MapTabs from "../components/MapTabs";
 
-import { getCommunityById } from "../apis/LandingPage.api";
+import {
+  getUserCommunity,
+} from "../apis/LandingPage.api";
 
-import type { Community } from "../types/landingPage";
+import type {
+  UserCommunityMembership,
+} from "../types/landingPage";
 
 function MapPage() {
   const navigate = useNavigate();
 
-  // TODO: Replace with localStorage after create-community flow is ready.
-  const communityId =
-    "8dce2719-eb99-450d-a70c-01ffdc9350c7";
-
-  const userName =
-    localStorage.getItem("username") ??
-    "Unknown user";
-
-  const [community, setCommunity] =
-    useState<Community | null>(null);
+  const userId =
+    localStorage.getItem("userId");
 
   const [
-    isLoadingCommunity,
-    setIsLoadingCommunity,
+    membership,
+    setMembership,
+  ] =
+    useState<UserCommunityMembership | null>(
+      null,
+    );
+
+  const [
+    isLoading,
+    setIsLoading,
   ] = useState(true);
 
   const [
-    communityError,
-    setCommunityError,
+    errorMessage,
+    setErrorMessage,
   ] = useState<string | null>(null);
 
   useEffect(() => {
-    async function fetchCommunity() {
+    if (!userId) {
+      setIsLoading(false);
+      return;
+    }
+
+    const currentUserId = userId;
+
+    async function fetchMembership() {
       try {
-        setIsLoadingCommunity(true);
-        setCommunityError(null);
+        setIsLoading(true);
+        setErrorMessage(null);
 
-        const fetchedCommunity =
-          await getCommunityById(communityId);
+        const fetchedMembership =
+          await getUserCommunity(currentUserId);
 
-        setCommunity(fetchedCommunity);
+        setMembership(
+          fetchedMembership,
+        );
+
+        localStorage.setItem(
+          "communityId",
+          fetchedMembership.community.id,
+        );
       } catch (error) {
+        if (
+          axios.isAxiosError(error) &&
+          error.response?.status === 404
+        ) {
+          localStorage.removeItem(
+            "communityId",
+          );
+
+          navigate("/", {
+            replace: true,
+          });
+
+          return;
+        }
+
         console.error(
-          "Failed to fetch community:",
+          "FETCH_MEMBERSHIP_ERROR:",
           error,
         );
 
-        setCommunityError(
-          "Unable to load community",
+        setErrorMessage(
+          "Unable to load community data",
         );
       } finally {
-        setIsLoadingCommunity(false);
+        setIsLoading(false);
       }
     }
 
-    void fetchCommunity();
-  }, [communityId]);
+    void fetchMembership();
+  }, [navigate, userId]);
 
   function handleLogout() {
     localStorage.removeItem("token");
@@ -79,23 +113,56 @@ function MapPage() {
     });
   }
 
-  if (!communityId) {
-    return <Navigate to="/" replace />;
+  if (!userId) {
+    return (
+      <Navigate
+        to="/login"
+        replace
+      />
+    );
   }
+
+  if (isLoading) {
+    return (
+      <main className="flex min-h-screen items-center justify-center bg-(--color-off-white)">
+        <p className="font-bold text-(--color-navy)">
+          Loading community...
+        </p>
+      </main>
+    );
+  }
+
+  if (!membership) {
+    return (
+      <Navigate
+        to="/"
+        replace
+      />
+    );
+  }
+
+  const communityId =
+    membership.community.id;
+
+  const communityName =
+    membership.community.name;
+
+  const userName =
+    membership.user.username;
+
+  const currentUserRole =
+    membership.role;
 
   return (
     <main className="min-h-screen w-full bg-(--color-off-white)">
       <header className="flex min-h-20 flex-wrap items-center justify-between gap-4 bg-(--color-navy) px-5 py-4 sm:px-9">
         <div>
           <p className="rounded-xl bg-(--color-off-white) px-5 py-2 text-sm font-bold text-(--color-navy) shadow-sm sm:text-base">
-            {isLoadingCommunity
-              ? "Loading..."
-              : community?.name ??
-              "Unknown community"}
+            {communityName}
           </p>
         </div>
 
-        <div className="flex flex-row items-center gap-5 md:gap-10">
+        <div className="flex items-center gap-5 md:gap-10">
           <p className="text-sm font-bold text-(--color-off-white) md:text-[24px]">
             {userName}
           </p>
@@ -117,9 +184,9 @@ function MapPage() {
       <div className="px-5 py-8 sm:px-9">
         <MapTabs />
 
-        {communityError && (
+        {errorMessage && (
           <div className="mt-5 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-semibold text-red-700">
-            {communityError}
+            {errorMessage}
           </div>
         )}
 
@@ -129,16 +196,19 @@ function MapPage() {
           </p>
 
           <h1 className="mt-2 text-xl font-bold text-(--color-navy) sm:text-2xl">
-            {community?.name ??
-              "Community"}{" "}
-            - Field map
+            {communityName} - Field map
           </h1>
 
           <div className="mt-5 grid gap-5 lg:grid-cols-[minmax(0,1fr)_288px]">
             <div className="min-h-[600px] w-full">
               <LandingMap
                 mode="community"
-                communityId={communityId}
+                communityId={
+                  communityId
+                }
+                currentUserRole={
+                  currentUserRole
+                }
               />
             </div>
 
