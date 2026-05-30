@@ -4,6 +4,8 @@ import express, { type Request, type Response } from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import morgan from "morgan";
+import authrouter from "./modules/auth/routers/auth.routes.js";
+import commurouter from './modules/dashboard/routers/dashboard.route.js'
 
 const app = express();
 
@@ -25,6 +27,8 @@ app.use(
 );
 
 app.use(morgan("dev"));
+app.use(authrouter)
+app.use(commurouter)
 
 // Test route
 app.get("/", (_req: Request, res: Response) => {

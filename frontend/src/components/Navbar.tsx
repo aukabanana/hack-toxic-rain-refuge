@@ -3,15 +3,15 @@ import { LogOut } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 interface NavbarProps {
-  // รองรับข้อมูลกลุ่มจาก Backend
+
   communityName?: string | null;
-  // รองรับสถานะการยืนยันตัวตนจาก Backend
+
   isAuthenticated?: boolean;
-  // รองรับข้อมูลผู้ใช้งานจาก Backend
+
   username?: string | null;
-  // ฟังก์ชันสำหรับอนาคตเมื่อกด Logout
+
   onLogout?: () => void;
-  // ข้อความบนปุ่มฝั่งขวา (เช่น 'Login', 'Register')
+
   rightButtonLabel?: string;
 }
 
@@ -24,12 +24,11 @@ const Navbar: React.FC<NavbarProps> = ({
 }) => {
   const navigate = useNavigate();
 
-  // ฟังก์ชันตรวจสอบเพื่อเปลี่ยนเส้นทางตามคำบนปุ่ม
   const handleNavigation = (): void => {
     if (rightButtonLabel === 'Register') {
-      navigate('/regis'); // ถ้าปุ่มเป็น Register กดแล้วจะส่งไปหน้าสมัครสมาชิก
+      navigate('/register'); 
     } else {
-      navigate('/loginp1'); // ถ้าปุ่มเป็น Login (หรือคำอื่น) กดแล้วจะส่งไปหน้าเข้าสู่ระบบตาม path ของคุณ
+      navigate('/login'); 
     }
   };
 
@@ -70,7 +69,7 @@ const Navbar: React.FC<NavbarProps> = ({
       ) : (
         <button
           type="button"
-          onClick={handleNavigation} // <--- เรียกฟังก์ชันตรวจสอบเงื่อนไขสลับหน้าตรงนี้
+          onClick={handleNavigation} 
           className="bg-white text-[#0a1963] font-bold px-5 py-1 rounded-md text-sm shadow-sm hover:bg-gray-100 transition-colors cursor-pointer"
         >
           {rightButtonLabel}
