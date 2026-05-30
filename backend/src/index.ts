@@ -5,6 +5,11 @@ import cookieParser from "cookie-parser";
 import morgan from "morgan";
 import zod from "zod";
 import prisma from "./lib/prisma.js";
+import authrouter from "./modules/auth/routers/auth.routes.js";
+import commurouter from './modules/dashboard/routers/dashboard.route.js'
+
+import communityRouter from "./modules/communities/routers/community.routes.js";
+import mapRouter from "./modules/map/routers/map.routes.js";
 
 const app = express();
 const port = process.env.PORT;
@@ -17,6 +22,11 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 app.use(morgan("dev"));
+app.use(('/auth'), authrouter)
+app.use(commurouter)
+
+app.use('/api/communities', communityRouter)
+app.use('/api/map', mapRouter)
 
 const CreateMissionSchema = zod.object({
   title: zod.string().min(3),
