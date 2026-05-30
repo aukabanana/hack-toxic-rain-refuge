@@ -21,6 +21,16 @@ function MapPage() {
     });
   }
 
+  // const communityId =
+  //   localStorage.getItem("communityId");
+  // TODO MOCK communityId 
+  const communityId =
+  "8dce2719-eb99-450d-a70c-01ffdc9350c7";
+
+  if (!communityId) {
+    return null;
+  }
+
   return (
     <main className="min-h-screen w-full bg-(--color-off-white)">
       <header className="flex min-h-20 flex-wrap items-center justify-between gap-4 bg-(--color-navy) px-5 py-4 sm:px-9">
@@ -29,12 +39,12 @@ function MapPage() {
         </div>
 
         <div className="flex items-center gap-5">
-        <div className="flex flex-row items-center gap-5 md:gap-10">
-                <p className="text-sm md:text-[24px] font-bold text-(--color-off-white)">{userName}</p>
-                <LogOut
-                  strokeWidth={3}
-                  className="cursor-pointer text-sm md:text-[24px] font-bold text-(--color-off-white) " />
-              </div>
+          <div className="flex flex-row items-center gap-5 md:gap-10">
+            <p className="text-sm md:text-[24px] font-bold text-(--color-off-white)">{userName}</p>
+            <LogOut
+              strokeWidth={3}
+              className="cursor-pointer text-sm md:text-[24px] font-bold text-(--color-off-white) " />
+          </div>
         </div>
       </header>
 
@@ -52,7 +62,12 @@ function MapPage() {
 
           <div className="mt-5 grid gap-5 lg:grid-cols-[minmax(0,1fr)_288px]">
             <div className="min-h-[600px] w-full">
-              <LandingMap mode="community" />
+              {communityId && (
+                <LandingMap
+                  mode="community"
+                  communityId={communityId}
+                />
+              )}
             </div>
             <MapLegend />
           </div>

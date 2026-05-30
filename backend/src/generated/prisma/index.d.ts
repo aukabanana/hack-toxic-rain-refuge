@@ -1600,6 +1600,7 @@ export namespace Prisma {
     assignments: number
     createdMarkers: number
     createdMissions: number
+    createdCommunities: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -1607,6 +1608,7 @@ export namespace Prisma {
     assignments?: boolean | UserCountOutputTypeCountAssignmentsArgs
     createdMarkers?: boolean | UserCountOutputTypeCountCreatedMarkersArgs
     createdMissions?: boolean | UserCountOutputTypeCountCreatedMissionsArgs
+    createdCommunities?: boolean | UserCountOutputTypeCountCreatedCommunitiesArgs
   }
 
   // Custom InputTypes
@@ -1646,6 +1648,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountCreatedMissionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: MissionWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountCreatedCommunitiesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CommunityWhereInput
   }
 
 
@@ -2028,6 +2037,7 @@ export namespace Prisma {
     assignments?: boolean | User$assignmentsArgs<ExtArgs>
     createdMarkers?: boolean | User$createdMarkersArgs<ExtArgs>
     createdMissions?: boolean | User$createdMissionsArgs<ExtArgs>
+    createdCommunities?: boolean | User$createdCommunitiesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -2067,6 +2077,7 @@ export namespace Prisma {
     assignments?: boolean | User$assignmentsArgs<ExtArgs>
     createdMarkers?: boolean | User$createdMarkersArgs<ExtArgs>
     createdMissions?: boolean | User$createdMissionsArgs<ExtArgs>
+    createdCommunities?: boolean | User$createdCommunitiesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -2079,6 +2090,7 @@ export namespace Prisma {
       assignments: Prisma.$MissionAssignmentPayload<ExtArgs>[]
       createdMarkers: Prisma.$MapMarkerPayload<ExtArgs>[]
       createdMissions: Prisma.$MissionPayload<ExtArgs>[]
+      createdCommunities: Prisma.$CommunityPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -2486,6 +2498,7 @@ export namespace Prisma {
     assignments<T extends User$assignmentsArgs<ExtArgs> = {}>(args?: Subset<T, User$assignmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MissionAssignmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     createdMarkers<T extends User$createdMarkersArgs<ExtArgs> = {}>(args?: Subset<T, User$createdMarkersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MapMarkerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     createdMissions<T extends User$createdMissionsArgs<ExtArgs> = {}>(args?: Subset<T, User$createdMissionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    createdCommunities<T extends User$createdCommunitiesArgs<ExtArgs> = {}>(args?: Subset<T, User$createdCommunitiesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CommunityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3009,6 +3022,30 @@ export namespace Prisma {
   }
 
   /**
+   * User.createdCommunities
+   */
+  export type User$createdCommunitiesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Community
+     */
+    select?: CommunitySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Community
+     */
+    omit?: CommunityOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CommunityInclude<ExtArgs> | null
+    where?: CommunityWhereInput
+    orderBy?: CommunityOrderByWithRelationInput | CommunityOrderByWithRelationInput[]
+    cursor?: CommunityWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CommunityScalarFieldEnum | CommunityScalarFieldEnum[]
+  }
+
+  /**
    * User without action
    */
   export type UserDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3040,6 +3077,7 @@ export namespace Prisma {
   export type CommunityMinAggregateOutputType = {
     id: string | null
     name: string | null
+    createdById: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -3047,6 +3085,7 @@ export namespace Prisma {
   export type CommunityMaxAggregateOutputType = {
     id: string | null
     name: string | null
+    createdById: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -3054,6 +3093,7 @@ export namespace Prisma {
   export type CommunityCountAggregateOutputType = {
     id: number
     name: number
+    createdById: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -3063,6 +3103,7 @@ export namespace Prisma {
   export type CommunityMinAggregateInputType = {
     id?: true
     name?: true
+    createdById?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -3070,6 +3111,7 @@ export namespace Prisma {
   export type CommunityMaxAggregateInputType = {
     id?: true
     name?: true
+    createdById?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -3077,6 +3119,7 @@ export namespace Prisma {
   export type CommunityCountAggregateInputType = {
     id?: true
     name?: true
+    createdById?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -3157,6 +3200,7 @@ export namespace Prisma {
   export type CommunityGroupByOutputType = {
     id: string
     name: string
+    createdById: string | null
     createdAt: Date
     updatedAt: Date
     _count: CommunityCountAggregateOutputType | null
@@ -3181,8 +3225,10 @@ export namespace Prisma {
   export type CommunitySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
+    createdById?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    createdBy?: boolean | Community$createdByArgs<ExtArgs>
     members?: boolean | Community$membersArgs<ExtArgs>
     resources?: boolean | Community$resourcesArgs<ExtArgs>
     markers?: boolean | Community$markersArgs<ExtArgs>
@@ -3194,26 +3240,32 @@ export namespace Prisma {
   export type CommunitySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
+    createdById?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    createdBy?: boolean | Community$createdByArgs<ExtArgs>
   }, ExtArgs["result"]["community"]>
 
   export type CommunitySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
+    createdById?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    createdBy?: boolean | Community$createdByArgs<ExtArgs>
   }, ExtArgs["result"]["community"]>
 
   export type CommunitySelectScalar = {
     id?: boolean
     name?: boolean
+    createdById?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type CommunityOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "createdAt" | "updatedAt", ExtArgs["result"]["community"]>
+  export type CommunityOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "createdById" | "createdAt" | "updatedAt", ExtArgs["result"]["community"]>
   export type CommunityInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    createdBy?: boolean | Community$createdByArgs<ExtArgs>
     members?: boolean | Community$membersArgs<ExtArgs>
     resources?: boolean | Community$resourcesArgs<ExtArgs>
     markers?: boolean | Community$markersArgs<ExtArgs>
@@ -3221,12 +3273,17 @@ export namespace Prisma {
     missions?: boolean | Community$missionsArgs<ExtArgs>
     _count?: boolean | CommunityCountOutputTypeDefaultArgs<ExtArgs>
   }
-  export type CommunityIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
-  export type CommunityIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type CommunityIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    createdBy?: boolean | Community$createdByArgs<ExtArgs>
+  }
+  export type CommunityIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    createdBy?: boolean | Community$createdByArgs<ExtArgs>
+  }
 
   export type $CommunityPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Community"
     objects: {
+      createdBy: Prisma.$UserPayload<ExtArgs> | null
       members: Prisma.$CommunityMemberPayload<ExtArgs>[]
       resources: Prisma.$ResourcePayload<ExtArgs>[]
       markers: Prisma.$MapMarkerPayload<ExtArgs>[]
@@ -3236,6 +3293,7 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: string
       name: string
+      createdById: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["community"]>
@@ -3632,6 +3690,7 @@ export namespace Prisma {
    */
   export interface Prisma__CommunityClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    createdBy<T extends Community$createdByArgs<ExtArgs> = {}>(args?: Subset<T, Community$createdByArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     members<T extends Community$membersArgs<ExtArgs> = {}>(args?: Subset<T, Community$membersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CommunityMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     resources<T extends Community$resourcesArgs<ExtArgs> = {}>(args?: Subset<T, Community$resourcesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ResourcePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     markers<T extends Community$markersArgs<ExtArgs> = {}>(args?: Subset<T, Community$markersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MapMarkerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -3668,6 +3727,7 @@ export namespace Prisma {
   interface CommunityFieldRefs {
     readonly id: FieldRef<"Community", 'String'>
     readonly name: FieldRef<"Community", 'String'>
+    readonly createdById: FieldRef<"Community", 'String'>
     readonly createdAt: FieldRef<"Community", 'DateTime'>
     readonly updatedAt: FieldRef<"Community", 'DateTime'>
   }
@@ -3922,6 +3982,10 @@ export namespace Prisma {
      * The data used to create many Communities.
      */
     data: CommunityCreateManyInput | CommunityCreateManyInput[]
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CommunityIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -3992,6 +4056,10 @@ export namespace Prisma {
      * Limit how many Communities to update.
      */
     limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CommunityIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -4058,6 +4126,25 @@ export namespace Prisma {
      * Limit how many Communities to delete.
      */
     limit?: number
+  }
+
+  /**
+   * Community.createdBy
+   */
+  export type Community$createdByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
   }
 
   /**
@@ -11163,6 +11250,7 @@ export namespace Prisma {
   export const CommunityScalarFieldEnum: {
     id: 'id',
     name: 'name',
+    createdById: 'createdById',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -11364,6 +11452,7 @@ export namespace Prisma {
     assignments?: MissionAssignmentListRelationFilter
     createdMarkers?: MapMarkerListRelationFilter
     createdMissions?: MissionListRelationFilter
+    createdCommunities?: CommunityListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -11378,6 +11467,7 @@ export namespace Prisma {
     assignments?: MissionAssignmentOrderByRelationAggregateInput
     createdMarkers?: MapMarkerOrderByRelationAggregateInput
     createdMissions?: MissionOrderByRelationAggregateInput
+    createdCommunities?: CommunityOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -11395,6 +11485,7 @@ export namespace Prisma {
     assignments?: MissionAssignmentListRelationFilter
     createdMarkers?: MapMarkerListRelationFilter
     createdMissions?: MissionListRelationFilter
+    createdCommunities?: CommunityListRelationFilter
   }, "id" | "telephone">
 
   export type UserOrderByWithAggregationInput = {
@@ -11429,8 +11520,10 @@ export namespace Prisma {
     NOT?: CommunityWhereInput | CommunityWhereInput[]
     id?: StringFilter<"Community"> | string
     name?: StringFilter<"Community"> | string
+    createdById?: StringNullableFilter<"Community"> | string | null
     createdAt?: DateTimeFilter<"Community"> | Date | string
     updatedAt?: DateTimeFilter<"Community"> | Date | string
+    createdBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     members?: CommunityMemberListRelationFilter
     resources?: ResourceListRelationFilter
     markers?: MapMarkerListRelationFilter
@@ -11441,8 +11534,10 @@ export namespace Prisma {
   export type CommunityOrderByWithRelationInput = {
     id?: SortOrder
     name?: SortOrder
+    createdById?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    createdBy?: UserOrderByWithRelationInput
     members?: CommunityMemberOrderByRelationAggregateInput
     resources?: ResourceOrderByRelationAggregateInput
     markers?: MapMarkerOrderByRelationAggregateInput
@@ -11456,8 +11551,10 @@ export namespace Prisma {
     OR?: CommunityWhereInput[]
     NOT?: CommunityWhereInput | CommunityWhereInput[]
     name?: StringFilter<"Community"> | string
+    createdById?: StringNullableFilter<"Community"> | string | null
     createdAt?: DateTimeFilter<"Community"> | Date | string
     updatedAt?: DateTimeFilter<"Community"> | Date | string
+    createdBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     members?: CommunityMemberListRelationFilter
     resources?: ResourceListRelationFilter
     markers?: MapMarkerListRelationFilter
@@ -11468,6 +11565,7 @@ export namespace Prisma {
   export type CommunityOrderByWithAggregationInput = {
     id?: SortOrder
     name?: SortOrder
+    createdById?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: CommunityCountOrderByAggregateInput
@@ -11481,6 +11579,7 @@ export namespace Prisma {
     NOT?: CommunityScalarWhereWithAggregatesInput | CommunityScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Community"> | string
     name?: StringWithAggregatesFilter<"Community"> | string
+    createdById?: StringNullableWithAggregatesFilter<"Community"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Community"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Community"> | Date | string
   }
@@ -11961,6 +12060,7 @@ export namespace Prisma {
     assignments?: MissionAssignmentCreateNestedManyWithoutUserInput
     createdMarkers?: MapMarkerCreateNestedManyWithoutCreatedByInput
     createdMissions?: MissionCreateNestedManyWithoutCreatedByInput
+    createdCommunities?: CommunityCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -11975,6 +12075,7 @@ export namespace Prisma {
     assignments?: MissionAssignmentUncheckedCreateNestedManyWithoutUserInput
     createdMarkers?: MapMarkerUncheckedCreateNestedManyWithoutCreatedByInput
     createdMissions?: MissionUncheckedCreateNestedManyWithoutCreatedByInput
+    createdCommunities?: CommunityUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUpdateInput = {
@@ -11989,6 +12090,7 @@ export namespace Prisma {
     assignments?: MissionAssignmentUpdateManyWithoutUserNestedInput
     createdMarkers?: MapMarkerUpdateManyWithoutCreatedByNestedInput
     createdMissions?: MissionUpdateManyWithoutCreatedByNestedInput
+    createdCommunities?: CommunityUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -12003,6 +12105,7 @@ export namespace Prisma {
     assignments?: MissionAssignmentUncheckedUpdateManyWithoutUserNestedInput
     createdMarkers?: MapMarkerUncheckedUpdateManyWithoutCreatedByNestedInput
     createdMissions?: MissionUncheckedUpdateManyWithoutCreatedByNestedInput
+    createdCommunities?: CommunityUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -12040,6 +12143,7 @@ export namespace Prisma {
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    createdBy?: UserCreateNestedOneWithoutCreatedCommunitiesInput
     members?: CommunityMemberCreateNestedManyWithoutCommunityInput
     resources?: ResourceCreateNestedManyWithoutCommunityInput
     markers?: MapMarkerCreateNestedManyWithoutCommunityInput
@@ -12050,6 +12154,7 @@ export namespace Prisma {
   export type CommunityUncheckedCreateInput = {
     id?: string
     name: string
+    createdById?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: CommunityMemberUncheckedCreateNestedManyWithoutCommunityInput
@@ -12064,6 +12169,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: UserUpdateOneWithoutCreatedCommunitiesNestedInput
     members?: CommunityMemberUpdateManyWithoutCommunityNestedInput
     resources?: ResourceUpdateManyWithoutCommunityNestedInput
     markers?: MapMarkerUpdateManyWithoutCommunityNestedInput
@@ -12074,6 +12180,7 @@ export namespace Prisma {
   export type CommunityUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    createdById?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: CommunityMemberUncheckedUpdateManyWithoutCommunityNestedInput
@@ -12086,6 +12193,7 @@ export namespace Prisma {
   export type CommunityCreateManyInput = {
     id?: string
     name: string
+    createdById?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -12100,6 +12208,7 @@ export namespace Prisma {
   export type CommunityUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    createdById?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -12342,8 +12451,8 @@ export namespace Prisma {
     riskLevel?: $Enums.RiskLevel
     createdAt?: Date | string
     updatedAt?: Date | string
-    community: CommunityCreateNestedOneWithoutMarkersInput | undefined
-    createdBy?: UserCreateNestedOneWithoutCreatedMarkersInput | undefined
+    community: CommunityCreateNestedOneWithoutMarkersInput
+    createdBy?: UserCreateNestedOneWithoutCreatedMarkersInput
     missions?: MissionCreateNestedManyWithoutTargetMarkerInput
   }
 
@@ -12355,8 +12464,8 @@ export namespace Prisma {
     longitude: number
     description?: string | null
     riskLevel?: $Enums.RiskLevel
-    communityId: string | undefined
-    createdById?: string | null | undefined
+    communityId: string
+    createdById?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     missions?: MissionUncheckedCreateNestedManyWithoutTargetMarkerInput
@@ -12632,6 +12741,12 @@ export namespace Prisma {
     none?: MissionWhereInput
   }
 
+  export type CommunityListRelationFilter = {
+    every?: CommunityWhereInput
+    some?: CommunityWhereInput
+    none?: CommunityWhereInput
+  }
+
   export type CommunityMemberOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -12645,6 +12760,10 @@ export namespace Prisma {
   }
 
   export type MissionOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type CommunityOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -12719,6 +12838,25 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
+  export type StringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | null
+    notIn?: string[] | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
+  export type UserNullableScalarRelationFilter = {
+    is?: UserWhereInput | null
+    isNot?: UserWhereInput | null
+  }
+
   export type ResourceListRelationFilter = {
     every?: ResourceWhereInput
     some?: ResourceWhereInput
@@ -12729,6 +12867,11 @@ export namespace Prisma {
     every?: MapZoneWhereInput
     some?: MapZoneWhereInput
     none?: MapZoneWhereInput
+  }
+
+  export type SortOrderInput = {
+    sort: SortOrder
+    nulls?: NullsOrder
   }
 
   export type ResourceOrderByRelationAggregateInput = {
@@ -12742,6 +12885,7 @@ export namespace Prisma {
   export type CommunityCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
+    createdById?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -12749,6 +12893,7 @@ export namespace Prisma {
   export type CommunityMaxOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
+    createdById?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -12756,8 +12901,26 @@ export namespace Prisma {
   export type CommunityMinOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
+    createdById?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | null
+    notIn?: string[] | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
   export type UserScalarRelationFilter = {
@@ -12901,25 +13064,6 @@ export namespace Prisma {
     not?: NestedEnumRiskLevelFilter<$PrismaModel> | $Enums.RiskLevel
   }
 
-  export type StringNullableFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | null
-    notIn?: string[] | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    not?: NestedStringNullableFilter<$PrismaModel> | string | null
-  }
-
-  export type SortOrderInput = {
-    sort: SortOrder
-    nulls?: NullsOrder
-  }
-
   export type MapZoneCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
@@ -12976,33 +13120,11 @@ export namespace Prisma {
     _max?: NestedEnumRiskLevelFilter<$PrismaModel>
   }
 
-  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | null
-    notIn?: string[] | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedStringNullableFilter<$PrismaModel>
-    _max?: NestedStringNullableFilter<$PrismaModel>
-  }
-
   export type EnumMarkerTypeFilter<$PrismaModel = never> = {
     equals?: $Enums.MarkerType | EnumMarkerTypeFieldRefInput<$PrismaModel>
     in?: $Enums.MarkerType[]
     notIn?: $Enums.MarkerType[]
     not?: NestedEnumMarkerTypeFilter<$PrismaModel> | $Enums.MarkerType
-  }
-
-  export type UserNullableScalarRelationFilter = {
-    is?: UserWhereInput | null
-    isNot?: UserWhereInput | null
   }
 
   export type MapMarkerCountOrderByAggregateInput = {
@@ -13200,6 +13322,13 @@ export namespace Prisma {
     connect?: MissionWhereUniqueInput | MissionWhereUniqueInput[]
   }
 
+  export type CommunityCreateNestedManyWithoutCreatedByInput = {
+    create?: XOR<CommunityCreateWithoutCreatedByInput, CommunityUncheckedCreateWithoutCreatedByInput> | CommunityCreateWithoutCreatedByInput[] | CommunityUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: CommunityCreateOrConnectWithoutCreatedByInput | CommunityCreateOrConnectWithoutCreatedByInput[]
+    createMany?: CommunityCreateManyCreatedByInputEnvelope
+    connect?: CommunityWhereUniqueInput | CommunityWhereUniqueInput[]
+  }
+
   export type CommunityMemberUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<CommunityMemberCreateWithoutUserInput, CommunityMemberUncheckedCreateWithoutUserInput> | CommunityMemberCreateWithoutUserInput[] | CommunityMemberUncheckedCreateWithoutUserInput[]
     connectOrCreate?: CommunityMemberCreateOrConnectWithoutUserInput | CommunityMemberCreateOrConnectWithoutUserInput[]
@@ -13226,6 +13355,13 @@ export namespace Prisma {
     connectOrCreate?: MissionCreateOrConnectWithoutCreatedByInput | MissionCreateOrConnectWithoutCreatedByInput[]
     createMany?: MissionCreateManyCreatedByInputEnvelope
     connect?: MissionWhereUniqueInput | MissionWhereUniqueInput[]
+  }
+
+  export type CommunityUncheckedCreateNestedManyWithoutCreatedByInput = {
+    create?: XOR<CommunityCreateWithoutCreatedByInput, CommunityUncheckedCreateWithoutCreatedByInput> | CommunityCreateWithoutCreatedByInput[] | CommunityUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: CommunityCreateOrConnectWithoutCreatedByInput | CommunityCreateOrConnectWithoutCreatedByInput[]
+    createMany?: CommunityCreateManyCreatedByInputEnvelope
+    connect?: CommunityWhereUniqueInput | CommunityWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -13296,6 +13432,20 @@ export namespace Prisma {
     deleteMany?: MissionScalarWhereInput | MissionScalarWhereInput[]
   }
 
+  export type CommunityUpdateManyWithoutCreatedByNestedInput = {
+    create?: XOR<CommunityCreateWithoutCreatedByInput, CommunityUncheckedCreateWithoutCreatedByInput> | CommunityCreateWithoutCreatedByInput[] | CommunityUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: CommunityCreateOrConnectWithoutCreatedByInput | CommunityCreateOrConnectWithoutCreatedByInput[]
+    upsert?: CommunityUpsertWithWhereUniqueWithoutCreatedByInput | CommunityUpsertWithWhereUniqueWithoutCreatedByInput[]
+    createMany?: CommunityCreateManyCreatedByInputEnvelope
+    set?: CommunityWhereUniqueInput | CommunityWhereUniqueInput[]
+    disconnect?: CommunityWhereUniqueInput | CommunityWhereUniqueInput[]
+    delete?: CommunityWhereUniqueInput | CommunityWhereUniqueInput[]
+    connect?: CommunityWhereUniqueInput | CommunityWhereUniqueInput[]
+    update?: CommunityUpdateWithWhereUniqueWithoutCreatedByInput | CommunityUpdateWithWhereUniqueWithoutCreatedByInput[]
+    updateMany?: CommunityUpdateManyWithWhereWithoutCreatedByInput | CommunityUpdateManyWithWhereWithoutCreatedByInput[]
+    deleteMany?: CommunityScalarWhereInput | CommunityScalarWhereInput[]
+  }
+
   export type CommunityMemberUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<CommunityMemberCreateWithoutUserInput, CommunityMemberUncheckedCreateWithoutUserInput> | CommunityMemberCreateWithoutUserInput[] | CommunityMemberUncheckedCreateWithoutUserInput[]
     connectOrCreate?: CommunityMemberCreateOrConnectWithoutUserInput | CommunityMemberCreateOrConnectWithoutUserInput[]
@@ -13350,6 +13500,26 @@ export namespace Prisma {
     update?: MissionUpdateWithWhereUniqueWithoutCreatedByInput | MissionUpdateWithWhereUniqueWithoutCreatedByInput[]
     updateMany?: MissionUpdateManyWithWhereWithoutCreatedByInput | MissionUpdateManyWithWhereWithoutCreatedByInput[]
     deleteMany?: MissionScalarWhereInput | MissionScalarWhereInput[]
+  }
+
+  export type CommunityUncheckedUpdateManyWithoutCreatedByNestedInput = {
+    create?: XOR<CommunityCreateWithoutCreatedByInput, CommunityUncheckedCreateWithoutCreatedByInput> | CommunityCreateWithoutCreatedByInput[] | CommunityUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: CommunityCreateOrConnectWithoutCreatedByInput | CommunityCreateOrConnectWithoutCreatedByInput[]
+    upsert?: CommunityUpsertWithWhereUniqueWithoutCreatedByInput | CommunityUpsertWithWhereUniqueWithoutCreatedByInput[]
+    createMany?: CommunityCreateManyCreatedByInputEnvelope
+    set?: CommunityWhereUniqueInput | CommunityWhereUniqueInput[]
+    disconnect?: CommunityWhereUniqueInput | CommunityWhereUniqueInput[]
+    delete?: CommunityWhereUniqueInput | CommunityWhereUniqueInput[]
+    connect?: CommunityWhereUniqueInput | CommunityWhereUniqueInput[]
+    update?: CommunityUpdateWithWhereUniqueWithoutCreatedByInput | CommunityUpdateWithWhereUniqueWithoutCreatedByInput[]
+    updateMany?: CommunityUpdateManyWithWhereWithoutCreatedByInput | CommunityUpdateManyWithWhereWithoutCreatedByInput[]
+    deleteMany?: CommunityScalarWhereInput | CommunityScalarWhereInput[]
+  }
+
+  export type UserCreateNestedOneWithoutCreatedCommunitiesInput = {
+    create?: XOR<UserCreateWithoutCreatedCommunitiesInput, UserUncheckedCreateWithoutCreatedCommunitiesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCreatedCommunitiesInput
+    connect?: UserWhereUniqueInput
   }
 
   export type CommunityMemberCreateNestedManyWithoutCommunityInput = {
@@ -13422,6 +13592,16 @@ export namespace Prisma {
     connect?: MissionWhereUniqueInput | MissionWhereUniqueInput[]
   }
 
+  export type UserUpdateOneWithoutCreatedCommunitiesNestedInput = {
+    create?: XOR<UserCreateWithoutCreatedCommunitiesInput, UserUncheckedCreateWithoutCreatedCommunitiesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCreatedCommunitiesInput
+    upsert?: UserUpsertWithoutCreatedCommunitiesInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutCreatedCommunitiesInput, UserUpdateWithoutCreatedCommunitiesInput>, UserUncheckedUpdateWithoutCreatedCommunitiesInput>
+  }
+
   export type CommunityMemberUpdateManyWithoutCommunityNestedInput = {
     create?: XOR<CommunityMemberCreateWithoutCommunityInput, CommunityMemberUncheckedCreateWithoutCommunityInput> | CommunityMemberCreateWithoutCommunityInput[] | CommunityMemberUncheckedCreateWithoutCommunityInput[]
     connectOrCreate?: CommunityMemberCreateOrConnectWithoutCommunityInput | CommunityMemberCreateOrConnectWithoutCommunityInput[]
@@ -13490,6 +13670,10 @@ export namespace Prisma {
     update?: MissionUpdateWithWhereUniqueWithoutCommunityInput | MissionUpdateWithWhereUniqueWithoutCommunityInput[]
     updateMany?: MissionUpdateManyWithWhereWithoutCommunityInput | MissionUpdateManyWithWhereWithoutCommunityInput[]
     deleteMany?: MissionScalarWhereInput | MissionScalarWhereInput[]
+  }
+
+  export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null
   }
 
   export type CommunityMemberUncheckedUpdateManyWithoutCommunityNestedInput = {
@@ -13712,10 +13896,6 @@ export namespace Prisma {
 
   export type EnumRiskLevelFieldUpdateOperationsInput = {
     set?: $Enums.RiskLevel
-  }
-
-  export type NullableStringFieldUpdateOperationsInput = {
-    set?: string | null
   }
 
   export type CommunityUpdateOneRequiredWithoutZonesNestedInput = {
@@ -14036,6 +14216,48 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
+  export type NestedStringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | null
+    notIn?: string[] | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
+  export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | null
+    notIn?: string[] | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
+  export type NestedIntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
   export type NestedEnumResourceTypeFilter<$PrismaModel = never> = {
     equals?: $Enums.ResourceType | EnumResourceTypeFieldRefInput<$PrismaModel>
     in?: $Enums.ResourceType[]
@@ -14094,20 +14316,6 @@ export namespace Prisma {
     not?: NestedEnumRiskLevelFilter<$PrismaModel> | $Enums.RiskLevel
   }
 
-  export type NestedStringNullableFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | null
-    notIn?: string[] | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    not?: NestedStringNullableFilter<$PrismaModel> | string | null
-  }
-
   export type NestedEnumZoneTypeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.ZoneType | EnumZoneTypeFieldRefInput<$PrismaModel>
     in?: $Enums.ZoneType[]
@@ -14126,34 +14334,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumRiskLevelFilter<$PrismaModel>
     _max?: NestedEnumRiskLevelFilter<$PrismaModel>
-  }
-
-  export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | null
-    notIn?: string[] | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedStringNullableFilter<$PrismaModel>
-    _max?: NestedStringNullableFilter<$PrismaModel>
-  }
-
-  export type NestedIntNullableFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | null
-    notIn?: number[] | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
   export type NestedEnumMarkerTypeFilter<$PrismaModel = never> = {
@@ -14312,6 +14492,39 @@ export namespace Prisma {
     data: MissionCreateManyCreatedByInput | MissionCreateManyCreatedByInput[]
   }
 
+  export type CommunityCreateWithoutCreatedByInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    members?: CommunityMemberCreateNestedManyWithoutCommunityInput
+    resources?: ResourceCreateNestedManyWithoutCommunityInput
+    markers?: MapMarkerCreateNestedManyWithoutCommunityInput
+    zones?: MapZoneCreateNestedManyWithoutCommunityInput
+    missions?: MissionCreateNestedManyWithoutCommunityInput
+  }
+
+  export type CommunityUncheckedCreateWithoutCreatedByInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    members?: CommunityMemberUncheckedCreateNestedManyWithoutCommunityInput
+    resources?: ResourceUncheckedCreateNestedManyWithoutCommunityInput
+    markers?: MapMarkerUncheckedCreateNestedManyWithoutCommunityInput
+    zones?: MapZoneUncheckedCreateNestedManyWithoutCommunityInput
+    missions?: MissionUncheckedCreateNestedManyWithoutCommunityInput
+  }
+
+  export type CommunityCreateOrConnectWithoutCreatedByInput = {
+    where: CommunityWhereUniqueInput
+    create: XOR<CommunityCreateWithoutCreatedByInput, CommunityUncheckedCreateWithoutCreatedByInput>
+  }
+
+  export type CommunityCreateManyCreatedByInputEnvelope = {
+    data: CommunityCreateManyCreatedByInput | CommunityCreateManyCreatedByInput[]
+  }
+
   export type CommunityMemberUpsertWithWhereUniqueWithoutUserInput = {
     where: CommunityMemberWhereUniqueInput
     update: XOR<CommunityMemberUpdateWithoutUserInput, CommunityMemberUncheckedUpdateWithoutUserInput>
@@ -14430,6 +14643,66 @@ export namespace Prisma {
     createdById?: StringNullableFilter<"Mission"> | string | null
     createdAt?: DateTimeFilter<"Mission"> | Date | string
     updatedAt?: DateTimeFilter<"Mission"> | Date | string
+  }
+
+  export type CommunityUpsertWithWhereUniqueWithoutCreatedByInput = {
+    where: CommunityWhereUniqueInput
+    update: XOR<CommunityUpdateWithoutCreatedByInput, CommunityUncheckedUpdateWithoutCreatedByInput>
+    create: XOR<CommunityCreateWithoutCreatedByInput, CommunityUncheckedCreateWithoutCreatedByInput>
+  }
+
+  export type CommunityUpdateWithWhereUniqueWithoutCreatedByInput = {
+    where: CommunityWhereUniqueInput
+    data: XOR<CommunityUpdateWithoutCreatedByInput, CommunityUncheckedUpdateWithoutCreatedByInput>
+  }
+
+  export type CommunityUpdateManyWithWhereWithoutCreatedByInput = {
+    where: CommunityScalarWhereInput
+    data: XOR<CommunityUpdateManyMutationInput, CommunityUncheckedUpdateManyWithoutCreatedByInput>
+  }
+
+  export type CommunityScalarWhereInput = {
+    AND?: CommunityScalarWhereInput | CommunityScalarWhereInput[]
+    OR?: CommunityScalarWhereInput[]
+    NOT?: CommunityScalarWhereInput | CommunityScalarWhereInput[]
+    id?: StringFilter<"Community"> | string
+    name?: StringFilter<"Community"> | string
+    createdById?: StringNullableFilter<"Community"> | string | null
+    createdAt?: DateTimeFilter<"Community"> | Date | string
+    updatedAt?: DateTimeFilter<"Community"> | Date | string
+  }
+
+  export type UserCreateWithoutCreatedCommunitiesInput = {
+    id?: string
+    username: string
+    password: string
+    telephone: string
+    role?: $Enums.UserRole
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    memberships?: CommunityMemberCreateNestedManyWithoutUserInput
+    assignments?: MissionAssignmentCreateNestedManyWithoutUserInput
+    createdMarkers?: MapMarkerCreateNestedManyWithoutCreatedByInput
+    createdMissions?: MissionCreateNestedManyWithoutCreatedByInput
+  }
+
+  export type UserUncheckedCreateWithoutCreatedCommunitiesInput = {
+    id?: string
+    username: string
+    password: string
+    telephone: string
+    role?: $Enums.UserRole
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    memberships?: CommunityMemberUncheckedCreateNestedManyWithoutUserInput
+    assignments?: MissionAssignmentUncheckedCreateNestedManyWithoutUserInput
+    createdMarkers?: MapMarkerUncheckedCreateNestedManyWithoutCreatedByInput
+    createdMissions?: MissionUncheckedCreateNestedManyWithoutCreatedByInput
+  }
+
+  export type UserCreateOrConnectWithoutCreatedCommunitiesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutCreatedCommunitiesInput, UserUncheckedCreateWithoutCreatedCommunitiesInput>
   }
 
   export type CommunityMemberCreateWithoutCommunityInput = {
@@ -14593,6 +14866,45 @@ export namespace Prisma {
     data: MissionCreateManyCommunityInput | MissionCreateManyCommunityInput[]
   }
 
+  export type UserUpsertWithoutCreatedCommunitiesInput = {
+    update: XOR<UserUpdateWithoutCreatedCommunitiesInput, UserUncheckedUpdateWithoutCreatedCommunitiesInput>
+    create: XOR<UserCreateWithoutCreatedCommunitiesInput, UserUncheckedCreateWithoutCreatedCommunitiesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutCreatedCommunitiesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutCreatedCommunitiesInput, UserUncheckedUpdateWithoutCreatedCommunitiesInput>
+  }
+
+  export type UserUpdateWithoutCreatedCommunitiesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    telephone?: StringFieldUpdateOperationsInput | string
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    memberships?: CommunityMemberUpdateManyWithoutUserNestedInput
+    assignments?: MissionAssignmentUpdateManyWithoutUserNestedInput
+    createdMarkers?: MapMarkerUpdateManyWithoutCreatedByNestedInput
+    createdMissions?: MissionUpdateManyWithoutCreatedByNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutCreatedCommunitiesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    telephone?: StringFieldUpdateOperationsInput | string
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    memberships?: CommunityMemberUncheckedUpdateManyWithoutUserNestedInput
+    assignments?: MissionAssignmentUncheckedUpdateManyWithoutUserNestedInput
+    createdMarkers?: MapMarkerUncheckedUpdateManyWithoutCreatedByNestedInput
+    createdMissions?: MissionUncheckedUpdateManyWithoutCreatedByNestedInput
+  }
+
   export type CommunityMemberUpsertWithWhereUniqueWithoutCommunityInput = {
     where: CommunityMemberWhereUniqueInput
     update: XOR<CommunityMemberUpdateWithoutCommunityInput, CommunityMemberUncheckedUpdateWithoutCommunityInput>
@@ -14713,6 +15025,7 @@ export namespace Prisma {
     assignments?: MissionAssignmentCreateNestedManyWithoutUserInput
     createdMarkers?: MapMarkerCreateNestedManyWithoutCreatedByInput
     createdMissions?: MissionCreateNestedManyWithoutCreatedByInput
+    createdCommunities?: CommunityCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutMembershipsInput = {
@@ -14726,6 +15039,7 @@ export namespace Prisma {
     assignments?: MissionAssignmentUncheckedCreateNestedManyWithoutUserInput
     createdMarkers?: MapMarkerUncheckedCreateNestedManyWithoutCreatedByInput
     createdMissions?: MissionUncheckedCreateNestedManyWithoutCreatedByInput
+    createdCommunities?: CommunityUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutMembershipsInput = {
@@ -14738,6 +15052,7 @@ export namespace Prisma {
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    createdBy?: UserCreateNestedOneWithoutCreatedCommunitiesInput
     resources?: ResourceCreateNestedManyWithoutCommunityInput
     markers?: MapMarkerCreateNestedManyWithoutCommunityInput
     zones?: MapZoneCreateNestedManyWithoutCommunityInput
@@ -14747,6 +15062,7 @@ export namespace Prisma {
   export type CommunityUncheckedCreateWithoutMembersInput = {
     id?: string
     name: string
+    createdById?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     resources?: ResourceUncheckedCreateNestedManyWithoutCommunityInput
@@ -14805,6 +15121,7 @@ export namespace Prisma {
     assignments?: MissionAssignmentUpdateManyWithoutUserNestedInput
     createdMarkers?: MapMarkerUpdateManyWithoutCreatedByNestedInput
     createdMissions?: MissionUpdateManyWithoutCreatedByNestedInput
+    createdCommunities?: CommunityUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMembershipsInput = {
@@ -14818,6 +15135,7 @@ export namespace Prisma {
     assignments?: MissionAssignmentUncheckedUpdateManyWithoutUserNestedInput
     createdMarkers?: MapMarkerUncheckedUpdateManyWithoutCreatedByNestedInput
     createdMissions?: MissionUncheckedUpdateManyWithoutCreatedByNestedInput
+    createdCommunities?: CommunityUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type CommunityUpsertWithoutMembersInput = {
@@ -14836,6 +15154,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: UserUpdateOneWithoutCreatedCommunitiesNestedInput
     resources?: ResourceUpdateManyWithoutCommunityNestedInput
     markers?: MapMarkerUpdateManyWithoutCommunityNestedInput
     zones?: MapZoneUpdateManyWithoutCommunityNestedInput
@@ -14845,6 +15164,7 @@ export namespace Prisma {
   export type CommunityUncheckedUpdateWithoutMembersInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    createdById?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     resources?: ResourceUncheckedUpdateManyWithoutCommunityNestedInput
@@ -14874,6 +15194,7 @@ export namespace Prisma {
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    createdBy?: UserCreateNestedOneWithoutCreatedCommunitiesInput
     members?: CommunityMemberCreateNestedManyWithoutCommunityInput
     markers?: MapMarkerCreateNestedManyWithoutCommunityInput
     zones?: MapZoneCreateNestedManyWithoutCommunityInput
@@ -14883,6 +15204,7 @@ export namespace Prisma {
   export type CommunityUncheckedCreateWithoutResourcesInput = {
     id?: string
     name: string
+    createdById?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: CommunityMemberUncheckedCreateNestedManyWithoutCommunityInput
@@ -14947,6 +15269,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: UserUpdateOneWithoutCreatedCommunitiesNestedInput
     members?: CommunityMemberUpdateManyWithoutCommunityNestedInput
     markers?: MapMarkerUpdateManyWithoutCommunityNestedInput
     zones?: MapZoneUpdateManyWithoutCommunityNestedInput
@@ -14956,6 +15279,7 @@ export namespace Prisma {
   export type CommunityUncheckedUpdateWithoutResourcesInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    createdById?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: CommunityMemberUncheckedUpdateManyWithoutCommunityNestedInput
@@ -14985,6 +15309,7 @@ export namespace Prisma {
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    createdBy?: UserCreateNestedOneWithoutCreatedCommunitiesInput
     members?: CommunityMemberCreateNestedManyWithoutCommunityInput
     resources?: ResourceCreateNestedManyWithoutCommunityInput
     markers?: MapMarkerCreateNestedManyWithoutCommunityInput
@@ -14994,6 +15319,7 @@ export namespace Prisma {
   export type CommunityUncheckedCreateWithoutZonesInput = {
     id?: string
     name: string
+    createdById?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: CommunityMemberUncheckedCreateNestedManyWithoutCommunityInput
@@ -15023,6 +15349,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: UserUpdateOneWithoutCreatedCommunitiesNestedInput
     members?: CommunityMemberUpdateManyWithoutCommunityNestedInput
     resources?: ResourceUpdateManyWithoutCommunityNestedInput
     markers?: MapMarkerUpdateManyWithoutCommunityNestedInput
@@ -15032,6 +15359,7 @@ export namespace Prisma {
   export type CommunityUncheckedUpdateWithoutZonesInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    createdById?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: CommunityMemberUncheckedUpdateManyWithoutCommunityNestedInput
@@ -15045,6 +15373,7 @@ export namespace Prisma {
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    createdBy?: UserCreateNestedOneWithoutCreatedCommunitiesInput
     members?: CommunityMemberCreateNestedManyWithoutCommunityInput
     resources?: ResourceCreateNestedManyWithoutCommunityInput
     zones?: MapZoneCreateNestedManyWithoutCommunityInput
@@ -15054,6 +15383,7 @@ export namespace Prisma {
   export type CommunityUncheckedCreateWithoutMarkersInput = {
     id?: string
     name: string
+    createdById?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: CommunityMemberUncheckedCreateNestedManyWithoutCommunityInput
@@ -15078,6 +15408,7 @@ export namespace Prisma {
     memberships?: CommunityMemberCreateNestedManyWithoutUserInput
     assignments?: MissionAssignmentCreateNestedManyWithoutUserInput
     createdMissions?: MissionCreateNestedManyWithoutCreatedByInput
+    createdCommunities?: CommunityCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutCreatedMarkersInput = {
@@ -15091,6 +15422,7 @@ export namespace Prisma {
     memberships?: CommunityMemberUncheckedCreateNestedManyWithoutUserInput
     assignments?: MissionAssignmentUncheckedCreateNestedManyWithoutUserInput
     createdMissions?: MissionUncheckedCreateNestedManyWithoutCreatedByInput
+    createdCommunities?: CommunityUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutCreatedMarkersInput = {
@@ -15149,6 +15481,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: UserUpdateOneWithoutCreatedCommunitiesNestedInput
     members?: CommunityMemberUpdateManyWithoutCommunityNestedInput
     resources?: ResourceUpdateManyWithoutCommunityNestedInput
     zones?: MapZoneUpdateManyWithoutCommunityNestedInput
@@ -15158,6 +15491,7 @@ export namespace Prisma {
   export type CommunityUncheckedUpdateWithoutMarkersInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    createdById?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: CommunityMemberUncheckedUpdateManyWithoutCommunityNestedInput
@@ -15188,6 +15522,7 @@ export namespace Prisma {
     memberships?: CommunityMemberUpdateManyWithoutUserNestedInput
     assignments?: MissionAssignmentUpdateManyWithoutUserNestedInput
     createdMissions?: MissionUpdateManyWithoutCreatedByNestedInput
+    createdCommunities?: CommunityUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCreatedMarkersInput = {
@@ -15201,6 +15536,7 @@ export namespace Prisma {
     memberships?: CommunityMemberUncheckedUpdateManyWithoutUserNestedInput
     assignments?: MissionAssignmentUncheckedUpdateManyWithoutUserNestedInput
     createdMissions?: MissionUncheckedUpdateManyWithoutCreatedByNestedInput
+    createdCommunities?: CommunityUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type MissionUpsertWithWhereUniqueWithoutTargetMarkerInput = {
@@ -15224,6 +15560,7 @@ export namespace Prisma {
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    createdBy?: UserCreateNestedOneWithoutCreatedCommunitiesInput
     members?: CommunityMemberCreateNestedManyWithoutCommunityInput
     resources?: ResourceCreateNestedManyWithoutCommunityInput
     markers?: MapMarkerCreateNestedManyWithoutCommunityInput
@@ -15233,6 +15570,7 @@ export namespace Prisma {
   export type CommunityUncheckedCreateWithoutMissionsInput = {
     id?: string
     name: string
+    createdById?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: CommunityMemberUncheckedCreateNestedManyWithoutCommunityInput
@@ -15317,6 +15655,7 @@ export namespace Prisma {
     memberships?: CommunityMemberCreateNestedManyWithoutUserInput
     assignments?: MissionAssignmentCreateNestedManyWithoutUserInput
     createdMarkers?: MapMarkerCreateNestedManyWithoutCreatedByInput
+    createdCommunities?: CommunityCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutCreatedMissionsInput = {
@@ -15330,6 +15669,7 @@ export namespace Prisma {
     memberships?: CommunityMemberUncheckedCreateNestedManyWithoutUserInput
     assignments?: MissionAssignmentUncheckedCreateNestedManyWithoutUserInput
     createdMarkers?: MapMarkerUncheckedCreateNestedManyWithoutCreatedByInput
+    createdCommunities?: CommunityUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutCreatedMissionsInput = {
@@ -15376,6 +15716,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: UserUpdateOneWithoutCreatedCommunitiesNestedInput
     members?: CommunityMemberUpdateManyWithoutCommunityNestedInput
     resources?: ResourceUpdateManyWithoutCommunityNestedInput
     markers?: MapMarkerUpdateManyWithoutCommunityNestedInput
@@ -15385,6 +15726,7 @@ export namespace Prisma {
   export type CommunityUncheckedUpdateWithoutMissionsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    createdById?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: CommunityMemberUncheckedUpdateManyWithoutCommunityNestedInput
@@ -15487,6 +15829,7 @@ export namespace Prisma {
     memberships?: CommunityMemberUpdateManyWithoutUserNestedInput
     assignments?: MissionAssignmentUpdateManyWithoutUserNestedInput
     createdMarkers?: MapMarkerUpdateManyWithoutCreatedByNestedInput
+    createdCommunities?: CommunityUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCreatedMissionsInput = {
@@ -15500,6 +15843,7 @@ export namespace Prisma {
     memberships?: CommunityMemberUncheckedUpdateManyWithoutUserNestedInput
     assignments?: MissionAssignmentUncheckedUpdateManyWithoutUserNestedInput
     createdMarkers?: MapMarkerUncheckedUpdateManyWithoutCreatedByNestedInput
+    createdCommunities?: CommunityUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type MissionAssignmentUpsertWithWhereUniqueWithoutMissionInput = {
@@ -15583,6 +15927,7 @@ export namespace Prisma {
     memberships?: CommunityMemberCreateNestedManyWithoutUserInput
     createdMarkers?: MapMarkerCreateNestedManyWithoutCreatedByInput
     createdMissions?: MissionCreateNestedManyWithoutCreatedByInput
+    createdCommunities?: CommunityCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutAssignmentsInput = {
@@ -15596,6 +15941,7 @@ export namespace Prisma {
     memberships?: CommunityMemberUncheckedCreateNestedManyWithoutUserInput
     createdMarkers?: MapMarkerUncheckedCreateNestedManyWithoutCreatedByInput
     createdMissions?: MissionUncheckedCreateNestedManyWithoutCreatedByInput
+    createdCommunities?: CommunityUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutAssignmentsInput = {
@@ -15691,6 +16037,7 @@ export namespace Prisma {
     memberships?: CommunityMemberUpdateManyWithoutUserNestedInput
     createdMarkers?: MapMarkerUpdateManyWithoutCreatedByNestedInput
     createdMissions?: MissionUpdateManyWithoutCreatedByNestedInput
+    createdCommunities?: CommunityUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAssignmentsInput = {
@@ -15704,6 +16051,7 @@ export namespace Prisma {
     memberships?: CommunityMemberUncheckedUpdateManyWithoutUserNestedInput
     createdMarkers?: MapMarkerUncheckedUpdateManyWithoutCreatedByNestedInput
     createdMissions?: MissionUncheckedUpdateManyWithoutCreatedByNestedInput
+    createdCommunities?: CommunityUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type CommunityMemberCreateManyUserInput = {
@@ -15742,6 +16090,13 @@ export namespace Prisma {
     communityId: string
     targetMarkerId?: string | null
     resourceId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CommunityCreateManyCreatedByInput = {
+    id?: string
+    name: string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -15868,6 +16223,37 @@ export namespace Prisma {
     communityId?: StringFieldUpdateOperationsInput | string
     targetMarkerId?: NullableStringFieldUpdateOperationsInput | string | null
     resourceId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CommunityUpdateWithoutCreatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    members?: CommunityMemberUpdateManyWithoutCommunityNestedInput
+    resources?: ResourceUpdateManyWithoutCommunityNestedInput
+    markers?: MapMarkerUpdateManyWithoutCommunityNestedInput
+    zones?: MapZoneUpdateManyWithoutCommunityNestedInput
+    missions?: MissionUpdateManyWithoutCommunityNestedInput
+  }
+
+  export type CommunityUncheckedUpdateWithoutCreatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    members?: CommunityMemberUncheckedUpdateManyWithoutCommunityNestedInput
+    resources?: ResourceUncheckedUpdateManyWithoutCommunityNestedInput
+    markers?: MapMarkerUncheckedUpdateManyWithoutCommunityNestedInput
+    zones?: MapZoneUncheckedUpdateManyWithoutCommunityNestedInput
+    missions?: MissionUncheckedUpdateManyWithoutCommunityNestedInput
+  }
+
+  export type CommunityUncheckedUpdateManyWithoutCreatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

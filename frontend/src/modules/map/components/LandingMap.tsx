@@ -1,4 +1,16 @@
-import { useState } from "react";
+import {
+  useEffect,
+  useState,
+} from "react";
+
+import {
+  createMapMarker,
+  deleteMapMarker,
+  deleteMapZone,
+  getMapMarkers,
+  getMapZones,
+} from "../apis/MapPage.api";
+
 import {
   divIcon,
   type LatLngExpression,
@@ -33,18 +45,19 @@ import CreateMarkerModal from "./CreateMarkerModal";
 
 import {
   CURRENT_USER_LOCATION,
-  MOCK_MAP_MARKERS,
   MOCK_MAP_ZONES,
 } from "../mocks/map.mock";
 
 import type {
   CreateMapMarkerPayload,
   MapMarker,
+  MapZone,
   MarkerType,
 } from "../types/map";
 
 interface LandingMapProps {
   mode?: "landing" | "community";
+  communityId?: string;
 }
 
 interface PendingMarkerPosition {
@@ -177,13 +190,20 @@ function MapClickHandler({
 
 function LandingMap({
   mode = "landing",
+  communityId,
 }: LandingMapProps) {
   const isCommunityMode = mode === "community";
 
   const [markers, setMarkers] =
-    useState<MapMarker[]>(MOCK_MAP_MARKERS);
+    useState<MapMarker[]>([]);
+
+  const [zones, setZones] =
+    useState<MapZone[]>([]);
 
   const [selectedMarkerId, setSelectedMarkerId] =
+    useState<string | null>(null);
+
+  const [selectedZoneId, setSelectedZoneId] =
     useState<string | null>(null);
 
   const [isCreateMode, setIsCreateMode] =
@@ -193,6 +213,11 @@ function LandingMap({
     pendingMarkerPosition,
     setPendingMarkerPosition,
   ] = useState<PendingMarkerPosition | null>(null);
+
+  const displayedZones =
+    isCommunityMode
+      ? zones
+      : MOCK_MAP_ZONES;
 
   function handleSelectMarkerPosition(
     latitude: number,
@@ -206,40 +231,123 @@ function LandingMap({
     setIsCreateMode(false);
   }
 
-  function handleCreateMarker(
-    payload: CreateMapMarkerPayload,
+  useEffect(() => {
+    if (
+      mode !== "community" ||
+      !communityId
+    ) {
+      return;
+    }
+
+    async function fetchMapData() {
+      try {
+        const [
+          fetchedMarkers,
+          fetchedZones,
+        ] = await Promise.all([
+          getMapMarkers(communityId as string),
+          getMapZones(communityId as string),
+        ]);
+
+        setMarkers(fetchedMarkers);
+        setZones(fetchedZones);
+      } catch (error) {
+        console.error(
+          "Failed to fetch map data:",
+          error,
+        );
+      }
+    }
+
+    void fetchMapData();
+  }, [communityId, mode]);
+
+  async function handleCreateMarker(
+    payload: Omit<
+      CreateMapMarkerPayload,
+      "latitude" | "longitude"
+    >,
   ) {
-    if (!pendingMarkerPosition) return;
+    if (
+      !communityId ||
+      !pendingMarkerPosition
+    ) {
+      return;
+    }
 
-    const newMarker: MapMarker = {
-      id: crypto.randomUUID(),
-      name: payload.name,
-      type: payload.type,
-      riskLevel: payload.riskLevel,
-      description: payload.description,
-      latitude: pendingMarkerPosition.latitude,
-      longitude: pendingMarkerPosition.longitude,
-    };
+    try {
+      const createdMarker =
+        await createMapMarker(
+          communityId,
+          {
+            ...payload,
+            latitude:
+              pendingMarkerPosition.latitude,
+            longitude:
+              pendingMarkerPosition.longitude,
+          },
+        );
 
-    setMarkers((currentMarkers) => [
-      ...currentMarkers,
-      newMarker,
-    ]);
+      setMarkers((previousMarkers) => [
+        ...previousMarkers,
+        createdMarker,
+      ]);
 
-    setSelectedMarkerId(newMarker.id);
-    setPendingMarkerPosition(null);
+      setPendingMarkerPosition(null);
+    } catch (error) {
+      console.error(
+        "Failed to create marker:",
+        error,
+      );
+    }
   }
 
-  function handleRemoveSelectedMarker() {
+  async function handleRemoveSelectedMarker() {
     if (!selectedMarkerId) return;
 
-    setMarkers((currentMarkers) =>
-      currentMarkers.filter(
-        (marker) => marker.id !== selectedMarkerId,
-      ),
-    );
+    try {
+      const deletedMarkerId =
+        await deleteMapMarker(
+          selectedMarkerId,
+        );
 
-    setSelectedMarkerId(null);
+      setMarkers((previousMarkers) =>
+        previousMarkers.filter(
+          (marker) =>
+            marker.id !== deletedMarkerId,
+        ),
+      );
+
+      setSelectedMarkerId(null);
+    } catch (error) {
+      console.error(
+        "Failed to delete marker:",
+        error,
+      );
+    }
+  }
+
+  async function handleRemoveSelectedZone() {
+    if (!selectedZoneId) return;
+
+    try {
+      const deletedZoneId =
+        await deleteMapZone(selectedZoneId);
+
+      setZones((previousZones) =>
+        previousZones.filter(
+          (zone) =>
+            zone.id !== deletedZoneId,
+        ),
+      );
+
+      setSelectedZoneId(null);
+    } catch (error) {
+      console.error(
+        "Failed to delete zone:",
+        error,
+      );
+    }
   }
 
   return (
@@ -256,23 +364,43 @@ function LandingMap({
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
 
-        {MOCK_MAP_ZONES.map((zone) => {
+        {displayedZones.map((zone) => {
+          if (!zone.geoJson) return null;
+
           const zoneGeoJson =
             JSON.parse(zone.geoJson) as GeoJsonObject;
+
+          const isToxicZone =
+            zone.type === "TOXIC";
 
           return (
             <GeoJSON
               key={zone.id}
               data={zoneGeoJson}
+              eventHandlers={{
+                click: () => {
+                  if (!isCommunityMode) return;
+
+                  setSelectedZoneId(zone.id);
+                  setSelectedMarkerId(null);
+                },
+              }}
               style={{
-                color: "#991B1B",
-                fillColor: "#DC2626",
+                color: isToxicZone
+                  ? "#991B1B"
+                  : "#15803D",
+
+                fillColor: isToxicZone
+                  ? "#DC2626"
+                  : "#22C55E",
+
                 fillOpacity:
                   zone.riskLevel === "CRITICAL"
                     ? 0.4
                     : zone.riskLevel === "HIGH"
                       ? 0.3
                       : 0.15,
+
                 opacity: 1,
                 weight: 1,
                 dashArray: "12 5",
@@ -280,11 +408,17 @@ function LandingMap({
             >
               <Popup>
                 <div className="min-w-48">
-                  <p className="font-bold text-(--color-wine-red)">
+                  <p
+                    className={
+                      isToxicZone
+                        ? "font-bold text-(--color-wine-red)"
+                        : "font-bold text-green-700"
+                    }
+                  >
                     {zone.name}
                   </p>
 
-                  <p className="mt-1 text-xs font-semibold uppercase tracking-wide text-(--color-wine-red)">
+                  <p className="mt-1 text-xs font-semibold uppercase tracking-wide">
                     {zone.type} · {zone.riskLevel}
                   </p>
 
@@ -340,6 +474,7 @@ function LandingMap({
               eventHandlers={{
                 click: () => {
                   setSelectedMarkerId(marker.id);
+                  setSelectedZoneId(null);
                 },
               }}
             >
@@ -404,6 +539,14 @@ function LandingMap({
             className="cursor-pointer rounded-xl bg-(--color-wine-red) px-4 py-2 text-sm font-bold text-white shadow-lg transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-50"
           >
             Remove Marker
+          </button>
+          <button
+            type="button"
+            disabled={!selectedZoneId}
+            onClick={handleRemoveSelectedZone}
+            className="cursor-pointer rounded-xl bg-(--color-wine-red) px-4 py-2 text-sm font-bold text-white shadow-lg transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            Remove Zone
           </button>
         </div>
       )}
