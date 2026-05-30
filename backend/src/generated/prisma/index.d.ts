@@ -8836,6 +8836,7 @@ export namespace Prisma {
     id: string | null
     title: string | null
     riskLevel: $Enums.RiskLevel | null
+    isCompleted: boolean | null
     urgency: $Enums.MissionUrgency | null
     communityId: string | null
     targetMarkerId: string | null
@@ -8849,6 +8850,7 @@ export namespace Prisma {
     id: string | null
     title: string | null
     riskLevel: $Enums.RiskLevel | null
+    isCompleted: boolean | null
     urgency: $Enums.MissionUrgency | null
     communityId: string | null
     targetMarkerId: string | null
@@ -8862,6 +8864,7 @@ export namespace Prisma {
     id: number
     title: number
     riskLevel: number
+    isCompleted: number
     urgency: number
     communityId: number
     targetMarkerId: number
@@ -8877,6 +8880,7 @@ export namespace Prisma {
     id?: true
     title?: true
     riskLevel?: true
+    isCompleted?: true
     urgency?: true
     communityId?: true
     targetMarkerId?: true
@@ -8890,6 +8894,7 @@ export namespace Prisma {
     id?: true
     title?: true
     riskLevel?: true
+    isCompleted?: true
     urgency?: true
     communityId?: true
     targetMarkerId?: true
@@ -8903,6 +8908,7 @@ export namespace Prisma {
     id?: true
     title?: true
     riskLevel?: true
+    isCompleted?: true
     urgency?: true
     communityId?: true
     targetMarkerId?: true
@@ -8989,6 +8995,7 @@ export namespace Prisma {
     id: string
     title: string
     riskLevel: $Enums.RiskLevel
+    isCompleted: boolean
     urgency: $Enums.MissionUrgency
     communityId: string
     targetMarkerId: string | null
@@ -9019,6 +9026,7 @@ export namespace Prisma {
     id?: boolean
     title?: boolean
     riskLevel?: boolean
+    isCompleted?: boolean
     urgency?: boolean
     communityId?: boolean
     targetMarkerId?: boolean
@@ -9038,6 +9046,7 @@ export namespace Prisma {
     id?: boolean
     title?: boolean
     riskLevel?: boolean
+    isCompleted?: boolean
     urgency?: boolean
     communityId?: boolean
     targetMarkerId?: boolean
@@ -9055,6 +9064,7 @@ export namespace Prisma {
     id?: boolean
     title?: boolean
     riskLevel?: boolean
+    isCompleted?: boolean
     urgency?: boolean
     communityId?: boolean
     targetMarkerId?: boolean
@@ -9072,6 +9082,7 @@ export namespace Prisma {
     id?: boolean
     title?: boolean
     riskLevel?: boolean
+    isCompleted?: boolean
     urgency?: boolean
     communityId?: boolean
     targetMarkerId?: boolean
@@ -9081,7 +9092,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type MissionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "riskLevel" | "urgency" | "communityId" | "targetMarkerId" | "resourceId" | "createdById" | "createdAt" | "updatedAt", ExtArgs["result"]["mission"]>
+  export type MissionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "riskLevel" | "isCompleted" | "urgency" | "communityId" | "targetMarkerId" | "resourceId" | "createdById" | "createdAt" | "updatedAt", ExtArgs["result"]["mission"]>
   export type MissionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     community?: boolean | CommunityDefaultArgs<ExtArgs>
     targetMarker?: boolean | Mission$targetMarkerArgs<ExtArgs>
@@ -9116,6 +9127,7 @@ export namespace Prisma {
       id: string
       title: string
       riskLevel: $Enums.RiskLevel
+      isCompleted: boolean
       urgency: $Enums.MissionUrgency
       communityId: string
       targetMarkerId: string | null
@@ -9554,6 +9566,7 @@ export namespace Prisma {
     readonly id: FieldRef<"Mission", 'String'>
     readonly title: FieldRef<"Mission", 'String'>
     readonly riskLevel: FieldRef<"Mission", 'RiskLevel'>
+    readonly isCompleted: FieldRef<"Mission", 'Boolean'>
     readonly urgency: FieldRef<"Mission", 'MissionUrgency'>
     readonly communityId: FieldRef<"Mission", 'String'>
     readonly targetMarkerId: FieldRef<"Mission", 'String'>
@@ -11232,6 +11245,7 @@ export namespace Prisma {
     id: 'id',
     title: 'title',
     riskLevel: 'riskLevel',
+    isCompleted: 'isCompleted',
     urgency: 'urgency',
     communityId: 'communityId',
     targetMarkerId: 'targetMarkerId',
@@ -11329,6 +11343,13 @@ export namespace Prisma {
    * Reference to a field of type 'MarkerType'
    */
   export type EnumMarkerTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MarkerType'>
+    
+
+
+  /**
+   * Reference to a field of type 'Boolean'
+   */
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
@@ -11802,6 +11823,7 @@ export namespace Prisma {
     id?: StringFilter<"Mission"> | string
     title?: StringFilter<"Mission"> | string
     riskLevel?: EnumRiskLevelFilter<"Mission"> | $Enums.RiskLevel
+    isCompleted?: BoolFilter<"Mission"> | boolean
     urgency?: EnumMissionUrgencyFilter<"Mission"> | $Enums.MissionUrgency
     communityId?: StringFilter<"Mission"> | string
     targetMarkerId?: StringNullableFilter<"Mission"> | string | null
@@ -11820,6 +11842,7 @@ export namespace Prisma {
     id?: SortOrder
     title?: SortOrder
     riskLevel?: SortOrder
+    isCompleted?: SortOrder
     urgency?: SortOrder
     communityId?: SortOrder
     targetMarkerId?: SortOrderInput | SortOrder
@@ -11841,6 +11864,7 @@ export namespace Prisma {
     NOT?: MissionWhereInput | MissionWhereInput[]
     title?: StringFilter<"Mission"> | string
     riskLevel?: EnumRiskLevelFilter<"Mission"> | $Enums.RiskLevel
+    isCompleted?: BoolFilter<"Mission"> | boolean
     urgency?: EnumMissionUrgencyFilter<"Mission"> | $Enums.MissionUrgency
     communityId?: StringFilter<"Mission"> | string
     targetMarkerId?: StringNullableFilter<"Mission"> | string | null
@@ -11859,6 +11883,7 @@ export namespace Prisma {
     id?: SortOrder
     title?: SortOrder
     riskLevel?: SortOrder
+    isCompleted?: SortOrder
     urgency?: SortOrder
     communityId?: SortOrder
     targetMarkerId?: SortOrderInput | SortOrder
@@ -11878,6 +11903,7 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"Mission"> | string
     title?: StringWithAggregatesFilter<"Mission"> | string
     riskLevel?: EnumRiskLevelWithAggregatesFilter<"Mission"> | $Enums.RiskLevel
+    isCompleted?: BoolWithAggregatesFilter<"Mission"> | boolean
     urgency?: EnumMissionUrgencyWithAggregatesFilter<"Mission"> | $Enums.MissionUrgency
     communityId?: StringWithAggregatesFilter<"Mission"> | string
     targetMarkerId?: StringNullableWithAggregatesFilter<"Mission"> | string | null
@@ -12436,6 +12462,7 @@ export namespace Prisma {
     id?: string
     title: string
     riskLevel?: $Enums.RiskLevel
+    isCompleted?: boolean
     urgency?: $Enums.MissionUrgency
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -12450,6 +12477,7 @@ export namespace Prisma {
     id?: string
     title: string
     riskLevel?: $Enums.RiskLevel
+    isCompleted?: boolean
     urgency?: $Enums.MissionUrgency
     communityId: string
     targetMarkerId?: string | null
@@ -12464,6 +12492,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     riskLevel?: EnumRiskLevelFieldUpdateOperationsInput | $Enums.RiskLevel
+    isCompleted?: BoolFieldUpdateOperationsInput | boolean
     urgency?: EnumMissionUrgencyFieldUpdateOperationsInput | $Enums.MissionUrgency
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -12478,6 +12507,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     riskLevel?: EnumRiskLevelFieldUpdateOperationsInput | $Enums.RiskLevel
+    isCompleted?: BoolFieldUpdateOperationsInput | boolean
     urgency?: EnumMissionUrgencyFieldUpdateOperationsInput | $Enums.MissionUrgency
     communityId?: StringFieldUpdateOperationsInput | string
     targetMarkerId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -12492,6 +12522,7 @@ export namespace Prisma {
     id?: string
     title: string
     riskLevel?: $Enums.RiskLevel
+    isCompleted?: boolean
     urgency?: $Enums.MissionUrgency
     communityId: string
     targetMarkerId?: string | null
@@ -12505,6 +12536,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     riskLevel?: EnumRiskLevelFieldUpdateOperationsInput | $Enums.RiskLevel
+    isCompleted?: BoolFieldUpdateOperationsInput | boolean
     urgency?: EnumMissionUrgencyFieldUpdateOperationsInput | $Enums.MissionUrgency
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -12514,6 +12546,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     riskLevel?: EnumRiskLevelFieldUpdateOperationsInput | $Enums.RiskLevel
+    isCompleted?: BoolFieldUpdateOperationsInput | boolean
     urgency?: EnumMissionUrgencyFieldUpdateOperationsInput | $Enums.MissionUrgency
     communityId?: StringFieldUpdateOperationsInput | string
     targetMarkerId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -13067,6 +13100,11 @@ export namespace Prisma {
     _max?: NestedEnumMarkerTypeFilter<$PrismaModel>
   }
 
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
   export type EnumMissionUrgencyFilter<$PrismaModel = never> = {
     equals?: $Enums.MissionUrgency | EnumMissionUrgencyFieldRefInput<$PrismaModel>
     in?: $Enums.MissionUrgency[]
@@ -13088,6 +13126,7 @@ export namespace Prisma {
     id?: SortOrder
     title?: SortOrder
     riskLevel?: SortOrder
+    isCompleted?: SortOrder
     urgency?: SortOrder
     communityId?: SortOrder
     targetMarkerId?: SortOrder
@@ -13101,6 +13140,7 @@ export namespace Prisma {
     id?: SortOrder
     title?: SortOrder
     riskLevel?: SortOrder
+    isCompleted?: SortOrder
     urgency?: SortOrder
     communityId?: SortOrder
     targetMarkerId?: SortOrder
@@ -13114,6 +13154,7 @@ export namespace Prisma {
     id?: SortOrder
     title?: SortOrder
     riskLevel?: SortOrder
+    isCompleted?: SortOrder
     urgency?: SortOrder
     communityId?: SortOrder
     targetMarkerId?: SortOrder
@@ -13121,6 +13162,14 @@ export namespace Prisma {
     createdById?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type EnumMissionUrgencyWithAggregatesFilter<$PrismaModel = never> = {
@@ -13840,6 +13889,10 @@ export namespace Prisma {
     connect?: MissionAssignmentWhereUniqueInput | MissionAssignmentWhereUniqueInput[]
   }
 
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
+  }
+
   export type EnumMissionUrgencyFieldUpdateOperationsInput = {
     set?: $Enums.MissionUrgency
   }
@@ -14173,11 +14226,24 @@ export namespace Prisma {
     _max?: NestedEnumMarkerTypeFilter<$PrismaModel>
   }
 
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
   export type NestedEnumMissionUrgencyFilter<$PrismaModel = never> = {
     equals?: $Enums.MissionUrgency | EnumMissionUrgencyFieldRefInput<$PrismaModel>
     in?: $Enums.MissionUrgency[]
     notIn?: $Enums.MissionUrgency[]
     not?: NestedEnumMissionUrgencyFilter<$PrismaModel> | $Enums.MissionUrgency
+  }
+
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type NestedEnumMissionUrgencyWithAggregatesFilter<$PrismaModel = never> = {
@@ -14281,6 +14347,7 @@ export namespace Prisma {
     id?: string
     title: string
     riskLevel?: $Enums.RiskLevel
+    isCompleted?: boolean
     urgency?: $Enums.MissionUrgency
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -14294,6 +14361,7 @@ export namespace Prisma {
     id?: string
     title: string
     riskLevel?: $Enums.RiskLevel
+    isCompleted?: boolean
     urgency?: $Enums.MissionUrgency
     communityId: string
     targetMarkerId?: string | null
@@ -14423,6 +14491,7 @@ export namespace Prisma {
     id?: StringFilter<"Mission"> | string
     title?: StringFilter<"Mission"> | string
     riskLevel?: EnumRiskLevelFilter<"Mission"> | $Enums.RiskLevel
+    isCompleted?: BoolFilter<"Mission"> | boolean
     urgency?: EnumMissionUrgencyFilter<"Mission"> | $Enums.MissionUrgency
     communityId?: StringFilter<"Mission"> | string
     targetMarkerId?: StringNullableFilter<"Mission"> | string | null
@@ -14562,6 +14631,7 @@ export namespace Prisma {
     id?: string
     title: string
     riskLevel?: $Enums.RiskLevel
+    isCompleted?: boolean
     urgency?: $Enums.MissionUrgency
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -14575,6 +14645,7 @@ export namespace Prisma {
     id?: string
     title: string
     riskLevel?: $Enums.RiskLevel
+    isCompleted?: boolean
     urgency?: $Enums.MissionUrgency
     targetMarkerId?: string | null
     resourceId?: string | null
@@ -14900,6 +14971,7 @@ export namespace Prisma {
     id?: string
     title: string
     riskLevel?: $Enums.RiskLevel
+    isCompleted?: boolean
     urgency?: $Enums.MissionUrgency
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -14913,6 +14985,7 @@ export namespace Prisma {
     id?: string
     title: string
     riskLevel?: $Enums.RiskLevel
+    isCompleted?: boolean
     urgency?: $Enums.MissionUrgency
     communityId: string
     targetMarkerId?: string | null
@@ -15102,6 +15175,7 @@ export namespace Prisma {
     id?: string
     title: string
     riskLevel?: $Enums.RiskLevel
+    isCompleted?: boolean
     urgency?: $Enums.MissionUrgency
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -15115,6 +15189,7 @@ export namespace Prisma {
     id?: string
     title: string
     riskLevel?: $Enums.RiskLevel
+    isCompleted?: boolean
     urgency?: $Enums.MissionUrgency
     communityId: string
     resourceId?: string | null
@@ -15522,6 +15597,7 @@ export namespace Prisma {
     id?: string
     title: string
     riskLevel?: $Enums.RiskLevel
+    isCompleted?: boolean
     urgency?: $Enums.MissionUrgency
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -15535,6 +15611,7 @@ export namespace Prisma {
     id?: string
     title: string
     riskLevel?: $Enums.RiskLevel
+    isCompleted?: boolean
     urgency?: $Enums.MissionUrgency
     communityId: string
     targetMarkerId?: string | null
@@ -15618,6 +15695,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     riskLevel?: EnumRiskLevelFieldUpdateOperationsInput | $Enums.RiskLevel
+    isCompleted?: BoolFieldUpdateOperationsInput | boolean
     urgency?: EnumMissionUrgencyFieldUpdateOperationsInput | $Enums.MissionUrgency
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -15631,6 +15709,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     riskLevel?: EnumRiskLevelFieldUpdateOperationsInput | $Enums.RiskLevel
+    isCompleted?: BoolFieldUpdateOperationsInput | boolean
     urgency?: EnumMissionUrgencyFieldUpdateOperationsInput | $Enums.MissionUrgency
     communityId?: StringFieldUpdateOperationsInput | string
     targetMarkerId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -15738,6 +15817,7 @@ export namespace Prisma {
     id?: string
     title: string
     riskLevel?: $Enums.RiskLevel
+    isCompleted?: boolean
     urgency?: $Enums.MissionUrgency
     communityId: string
     targetMarkerId?: string | null
@@ -15838,6 +15918,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     riskLevel?: EnumRiskLevelFieldUpdateOperationsInput | $Enums.RiskLevel
+    isCompleted?: BoolFieldUpdateOperationsInput | boolean
     urgency?: EnumMissionUrgencyFieldUpdateOperationsInput | $Enums.MissionUrgency
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -15851,6 +15932,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     riskLevel?: EnumRiskLevelFieldUpdateOperationsInput | $Enums.RiskLevel
+    isCompleted?: BoolFieldUpdateOperationsInput | boolean
     urgency?: EnumMissionUrgencyFieldUpdateOperationsInput | $Enums.MissionUrgency
     communityId?: StringFieldUpdateOperationsInput | string
     targetMarkerId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -15864,6 +15946,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     riskLevel?: EnumRiskLevelFieldUpdateOperationsInput | $Enums.RiskLevel
+    isCompleted?: BoolFieldUpdateOperationsInput | boolean
     urgency?: EnumMissionUrgencyFieldUpdateOperationsInput | $Enums.MissionUrgency
     communityId?: StringFieldUpdateOperationsInput | string
     targetMarkerId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -15918,6 +16001,7 @@ export namespace Prisma {
     id?: string
     title: string
     riskLevel?: $Enums.RiskLevel
+    isCompleted?: boolean
     urgency?: $Enums.MissionUrgency
     targetMarkerId?: string | null
     resourceId?: string | null
@@ -16062,6 +16146,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     riskLevel?: EnumRiskLevelFieldUpdateOperationsInput | $Enums.RiskLevel
+    isCompleted?: BoolFieldUpdateOperationsInput | boolean
     urgency?: EnumMissionUrgencyFieldUpdateOperationsInput | $Enums.MissionUrgency
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -16075,6 +16160,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     riskLevel?: EnumRiskLevelFieldUpdateOperationsInput | $Enums.RiskLevel
+    isCompleted?: BoolFieldUpdateOperationsInput | boolean
     urgency?: EnumMissionUrgencyFieldUpdateOperationsInput | $Enums.MissionUrgency
     targetMarkerId?: NullableStringFieldUpdateOperationsInput | string | null
     resourceId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -16088,6 +16174,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     riskLevel?: EnumRiskLevelFieldUpdateOperationsInput | $Enums.RiskLevel
+    isCompleted?: BoolFieldUpdateOperationsInput | boolean
     urgency?: EnumMissionUrgencyFieldUpdateOperationsInput | $Enums.MissionUrgency
     targetMarkerId?: NullableStringFieldUpdateOperationsInput | string | null
     resourceId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -16128,6 +16215,7 @@ export namespace Prisma {
     id?: string
     title: string
     riskLevel?: $Enums.RiskLevel
+    isCompleted?: boolean
     urgency?: $Enums.MissionUrgency
     communityId: string
     targetMarkerId?: string | null
@@ -16140,6 +16228,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     riskLevel?: EnumRiskLevelFieldUpdateOperationsInput | $Enums.RiskLevel
+    isCompleted?: BoolFieldUpdateOperationsInput | boolean
     urgency?: EnumMissionUrgencyFieldUpdateOperationsInput | $Enums.MissionUrgency
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -16153,6 +16242,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     riskLevel?: EnumRiskLevelFieldUpdateOperationsInput | $Enums.RiskLevel
+    isCompleted?: BoolFieldUpdateOperationsInput | boolean
     urgency?: EnumMissionUrgencyFieldUpdateOperationsInput | $Enums.MissionUrgency
     communityId?: StringFieldUpdateOperationsInput | string
     targetMarkerId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -16166,6 +16256,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     riskLevel?: EnumRiskLevelFieldUpdateOperationsInput | $Enums.RiskLevel
+    isCompleted?: BoolFieldUpdateOperationsInput | boolean
     urgency?: EnumMissionUrgencyFieldUpdateOperationsInput | $Enums.MissionUrgency
     communityId?: StringFieldUpdateOperationsInput | string
     targetMarkerId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -16178,6 +16269,7 @@ export namespace Prisma {
     id?: string
     title: string
     riskLevel?: $Enums.RiskLevel
+    isCompleted?: boolean
     urgency?: $Enums.MissionUrgency
     communityId: string
     resourceId?: string | null
@@ -16190,6 +16282,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     riskLevel?: EnumRiskLevelFieldUpdateOperationsInput | $Enums.RiskLevel
+    isCompleted?: BoolFieldUpdateOperationsInput | boolean
     urgency?: EnumMissionUrgencyFieldUpdateOperationsInput | $Enums.MissionUrgency
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -16203,6 +16296,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     riskLevel?: EnumRiskLevelFieldUpdateOperationsInput | $Enums.RiskLevel
+    isCompleted?: BoolFieldUpdateOperationsInput | boolean
     urgency?: EnumMissionUrgencyFieldUpdateOperationsInput | $Enums.MissionUrgency
     communityId?: StringFieldUpdateOperationsInput | string
     resourceId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -16216,6 +16310,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     riskLevel?: EnumRiskLevelFieldUpdateOperationsInput | $Enums.RiskLevel
+    isCompleted?: BoolFieldUpdateOperationsInput | boolean
     urgency?: EnumMissionUrgencyFieldUpdateOperationsInput | $Enums.MissionUrgency
     communityId?: StringFieldUpdateOperationsInput | string
     resourceId?: NullableStringFieldUpdateOperationsInput | string | null

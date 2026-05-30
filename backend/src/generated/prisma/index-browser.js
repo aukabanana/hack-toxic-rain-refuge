@@ -184,6 +184,7 @@ exports.Prisma.MissionScalarFieldEnum = {
   id: 'id',
   title: 'title',
   riskLevel: 'riskLevel',
+  isCompleted: 'isCompleted',
   urgency: 'urgency',
   communityId: 'communityId',
   targetMarkerId: 'targetMarkerId',

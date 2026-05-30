@@ -1,100 +1,150 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 export interface Mission {
   id: string;
   title: string;
-  description: string;
-  riskLevel: 'High' | 'Medium' | 'Low'; 
+  riskLevel: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL' | 'UNKNOWN';
+  isCompleted: boolean;
 }
 
 interface MissionDrawerProps {
   isOpen: boolean;
   onClose: () => void;
-  role: 'scout' | 'finder'; 
-  missions: Mission[];
+  role: 'scout' | 'finder';
+  communityId: string;
 }
 
-export const MissionDrawer: React.FC<MissionDrawerProps> = ({ isOpen, onClose, role, missions }) => {
-  if (!isOpen) return null;
+export const MissionDrawer: React.FC<MissionDrawerProps> = ({ isOpen, onClose, role }) => {
+  const [missions, setMissions] = useState<Mission[]>([]);
+  const [deleteTarget, setDeleteTarget] = useState<string | null>(null);
 
-  const getRiskBadgeStyle = (risk: 'High' | 'Medium' | 'Low') => {
+  const fetchMissions = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/api/missions');
+      if (response.ok) {
+        const data = await response.json();
+        setMissions(data);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    if (isOpen) fetchMissions();
+  }, [isOpen]);
+
+  const toggleMissionStatus = async (id: string, currentStatus: boolean) => {
+    try {
+      const response = await fetch(`http://localhost:5000/api/missions/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ isCompleted: !currentStatus }),
+      });
+      if (response.ok) fetchMissions();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleDeleteMission = async (id: string) => {
+    try {
+      const response = await fetch(`http://localhost:5000/api/missions/${id}`, { method: 'DELETE' });
+      if (response.ok) {
+        fetchMissions();
+        setDeleteTarget(null);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const getRiskBadgeStyle = (risk: Mission['riskLevel']) => {
     switch (risk) {
-      case 'High': return 'bg-red-100 text-red-600 font-medium border border-red-200'; 
-      case 'Medium': return 'bg-amber-100 text-amber-600 font-medium border border-amber-200'; 
-      case 'Low': return 'bg-green-100 text-green-600 font-medium border border-green-200'; 
-      default: return 'bg-gray-100 text-gray-600';
+      case 'CRITICAL': return 'bg-red-200 text-red-800';
+      case 'HIGH': return 'bg-red-100 text-red-600';
+      case 'MEDIUM': return 'bg-amber-100 text-amber-600';
+      case 'UNKNOWN': return 'bg-gray-100 text-gray-600';
+      default: return 'bg-green-100 text-green-600';
     }
   };
 
   return (
-    
-    <div className="fixed inset-y-0 right-0 w-full md:w-1/2 bg-white shadow-2xl border-l border-gray-200 z-50 flex flex-col transition-transform duration-300">
-      
-      <div className="p-4 flex items-center border-b border-gray-100 bg-white">
-        <button onClick={onClose} className="text-blue-900 hover:text-blue-700 font-bold text-2xl p-2 focus:outline-none">
-          &gt;
-        </button>
-        <div className="flex-1 text-center mr-8">
-          <h2 className="text-xl md:text-2xl font-bold text-blue-900 tracking-wide">Missions</h2>
-          <span className="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded-md uppercase font-bold">
-            Role: {role === 'scout' ? '⚡ Scout' : '📦 Resource Finder'}
-          </span>
+    <>
+      <div className={`fixed inset-0 z-50 transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+        <div className="absolute inset-0 bg-black/20" onClick={onClose} />
+        
+        <div className={`absolute inset-y-0 right-0 w-full md:w-1/2 bg-white shadow-2xl flex flex-col transform transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+          <div className="p-4 border-b flex items-center justify-between">
+            <button onClick={onClose} className="text-blue-900 font-bold text-2xl">&gt;</button>
+            <h2 className="text-xl font-bold text-blue-900">Missions</h2>
+            <div />
+          </div>
+
+          <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50">
+            {missions.map((mission) => (
+              <div key={mission.id} className="flex items-center gap-2">
+                <div className={`flex-1 bg-white p-4 rounded-xl border shadow-sm flex items-center justify-between gap-2 ${mission.isCompleted ? 'opacity-60 bg-gray-50' : ''}`}>
+                  <div className="flex flex-col min-w-0">
+                    <h4 className={`font-bold text-sm truncate ${mission.isCompleted ? 'line-through text-slate-400' : 'text-slate-800'}`}>
+                      {mission.title}
+                    </h4>
+                    {mission.isCompleted && <span className="text-[9px] font-bold text-green-600 uppercase">✅ COMPLETED</span>}
+                  </div>
+                  <span className={`text-[10px] px-2 py-0.5 rounded-full flex-shrink-0 font-bold ${getRiskBadgeStyle(mission.riskLevel)}`}>
+                    {mission.riskLevel}
+                  </span>
+                </div>
+
+                {role === 'scout' && (
+                  <div className="flex flex-row gap-2 flex-shrink-0">
+                    <button 
+                      onClick={() => toggleMissionStatus(mission.id, mission.isCompleted)}
+                      className={`p-2 rounded-lg border transition-colors ${
+                        mission.isCompleted 
+                          ? 'bg-green-100 border-green-200 text-green-700' 
+                          : 'bg-blue-50 border-blue-200 text-blue-600 hover:bg-blue-100'
+                      }`}
+                    >
+                      {mission.isCompleted ? '✅' : '🖋️'}
+                    </button>
+                    <button 
+                      onClick={() => setDeleteTarget(mission.id)} 
+                      className="p-2 bg-red-50 text-red-500 rounded-lg border border-red-200 hover:bg-red-100 transition-colors"
+                    >
+                      🗑️
+                    </button>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
-      <div className="flex-1 p-4 md:p-6 overflow-y-auto space-y-4 bg-gray-50/50">
-        {missions.map((mission) => (
-          <div key={mission.id} className="flex items-center gap-2 md:gap-4">
-            
-            {role === 'finder' && (
-              <div className="flex-shrink-0 pl-1">
-                <input 
-                  type="checkbox" 
-                  className="w-5 h-5 rounded border-gray-300 text-blue-900 focus:ring-blue-900 cursor-pointer"
-                />
-              </div>
-            )}
-
-            <div className="flex-1 bg-white p-4 md:p-5 rounded-xl border border-gray-200 shadow-sm flex items-center justify-between gap-2 md:gap-4 min-w-0">
-              <div className="flex-1 min-w-0">
-                <h4 className="font-bold text-slate-800 text-sm md:text-base truncate">{mission.title}</h4>
-                <p className="text-[11px] md:text-xs text-slate-500 mt-1 break-words line-clamp-2 md:line-clamp-none">
-                  {mission.description}
-                </p>
-              </div>
-              <span className={`text-[10px] md:text-xs px-2 py-0.5 md:px-2.5 md:py-1 rounded-full flex-shrink-0 ${getRiskBadgeStyle(mission.riskLevel)}`}>
-                {mission.riskLevel}
-              </span>
+      {deleteTarget && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/20 backdrop-blur-sm" onClick={() => setDeleteTarget(null)} />
+          <div className="bg-white p-6 rounded-xl shadow-2xl w-80 text-center border border-blue-100 relative z-10">
+            <h3 className="text-blue-900 font-bold text-lg mb-2">Delete Mission</h3>
+            <p className="text-gray-600 text-sm mb-6">Are you sure you want to delete this mission?</p>
+            <div className="flex gap-3">
+              <button 
+                onClick={() => setDeleteTarget(null)}
+                className="flex-1 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded transition-colors"
+              >
+                Cancel
+              </button>
+              <button 
+                onClick={() => handleDeleteMission(deleteTarget)}
+                className="flex-1 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded transition-colors"
+              >
+                Delete
+              </button>
             </div>
-
-            {role === 'scout' && (
-              <div className="flex flex-col gap-1.5 md:gap-2 flex-shrink-0">
-                <button 
-                  onClick={() => console.log(`Edit mission: ${mission.id}`)}
-                  className="p-2 md:p-2.5 bg-blue-50 text-blue-900 hover:bg-blue-100 rounded-lg border border-blue-200 transition-all flex items-center justify-center shadow-sm"
-                  title="Edit Mission"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-3.5 h-3.5 md:w-4 md:h-4">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
-                  </svg>
-                </button>
-
-                <button 
-                  onClick={() => console.log(`Delete mission: ${mission.id}`)}
-                  className="p-2 md:p-2.5 bg-red-50 text-red-600 hover:bg-red-100 rounded-lg border border-red-200 transition-all flex items-center justify-center shadow-sm"
-                  title="Delete Mission"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-3.5 h-3.5 md:w-4 md:h-4">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
-                  </svg>
-                </button>
-              </div>
-            )}
-
           </div>
-        ))}
-      </div>
-
-    </div>
+        </div>
+      )}
+    </>
   );
 };

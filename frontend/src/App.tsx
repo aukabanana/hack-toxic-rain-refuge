@@ -1,17 +1,10 @@
 import { Outlet } from "react-router-dom";
 import React, { useState } from 'react';
-import { MissionDrawer, Mission } from './modules/missions/components/MissionDrawer.js';
-const sampleMissions: Mission[] = [
-  { id: '1', title: 'Food Search', description: 'Search for the food', riskLevel: 'High' },
-  { id: '2', title: 'Refill Water', description: 'Search for the water place', riskLevel: 'Low' },
-  { id: '3', title: 'Find new path', description: 'Explore new way', riskLevel: 'Low' },
-  { id: '4', title: 'Explore new bunker', description: 'Search for the new bunker', riskLevel: 'High' },
-  { id: '5', title: 'Meet people from another bunker', description: 'Find another survivor and exchange resources', riskLevel: 'Medium' },
-];
+import { MissionDrawer } from './modules/missions/components/MissionDrawer.js';
 
 function App() {
-  const [isOpen, setIsOpen] = useState(true); // ตั้งเป็น true ไว้ให้เปิดค้างโชว์ตั้งแต่เริ่มเลยครับ
-  const [role, setRole] = useState<'scout' | 'finder'>('finder'); // ใช้สลับดู 2 บทบาท
+  const [isOpen, setIsOpen] = useState(true);
+  const [role, setRole] = useState<'scout' | 'finder'>('finder');
 
   return (
     <>
@@ -32,7 +25,7 @@ function App() {
         isOpen={isOpen} 
         onClose={() => setIsOpen(false)} 
         role={role} 
-        missions={sampleMissions} 
+        communityId="mock-community-id-123"
       />
     </>
   );
