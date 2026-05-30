@@ -12342,8 +12342,8 @@ export namespace Prisma {
     riskLevel?: $Enums.RiskLevel
     createdAt?: Date | string
     updatedAt?: Date | string
-    community: CommunityCreateNestedOneWithoutMarkersInput
-    createdBy?: UserCreateNestedOneWithoutCreatedMarkersInput
+    community: CommunityCreateNestedOneWithoutMarkersInput | undefined
+    createdBy?: UserCreateNestedOneWithoutCreatedMarkersInput | undefined
     missions?: MissionCreateNestedManyWithoutTargetMarkerInput
   }
 
@@ -12355,8 +12355,8 @@ export namespace Prisma {
     longitude: number
     description?: string | null
     riskLevel?: $Enums.RiskLevel
-    communityId: string
-    createdById?: string | null
+    communityId: string | undefined
+    createdById?: string | null | undefined
     createdAt?: Date | string
     updatedAt?: Date | string
     missions?: MissionUncheckedCreateNestedManyWithoutTargetMarkerInput
