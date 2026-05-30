@@ -30,11 +30,11 @@ app.use(
 );
 
 app.use(morgan("dev"));
-app.use(authrouter)
-app.use(commurouter)
+app.use("/auth", authrouter);
+app.use(commurouter);
 
-app.use('/api/communities', communityRouter)
-app.use('/api/map', mapRouter)
+app.use("/api/communities", communityRouter);
+app.use("/api/map", mapRouter);
 
 // Test route
 app.get("/", (_req: Request, res: Response) => {

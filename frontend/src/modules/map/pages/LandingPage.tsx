@@ -20,8 +20,8 @@ function LandingPage() {
     useState(false);
 
   // TODO Mock auth
-  const isAuthenticated = true;
-  const haveCommu = true;
+  const isAuthenticated = false;
+  const haveCommu = false;
   const communityName = "comb A";
   const userName = "Auka";
 
