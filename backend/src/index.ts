@@ -7,6 +7,9 @@ import morgan from "morgan";
 import authrouter from "./modules/auth/routers/auth.routes.js";
 import commurouter from './modules/dashboard/routers/dashboard.route.js'
 
+import communityRouter from "./modules/communities/routers/community.routes.js";
+import mapRouter from "./modules/map/routers/map.routes.js";
+
 const app = express();
 
 const port = process.env.PORT;
@@ -29,6 +32,9 @@ app.use(
 app.use(morgan("dev"));
 app.use(('/auth'), authrouter)
 app.use(commurouter)
+
+app.use('/api/communities', communityRouter)
+app.use('/api/map', mapRouter)
 
 // Test route
 app.get("/", (_req: Request, res: Response) => {
