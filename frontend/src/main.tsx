@@ -5,9 +5,26 @@ import { createRoot } from 'react-dom/client'
 // @ts-ignore
 import './index.css'
 import App from './App.tsx'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import LandingPage from './modules/map/pages/LandingPage.tsx'
+import { mapPage } from './modules/map/routers/mapPage.router.tsx'
+
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <App />,
+    children: [
+      {
+        index: true,
+        element: <LandingPage />,
+      },
+      ...mapPage
+    ]
+  }
+])
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <App />
+    <RouterProvider router={router} />
   </StrictMode>,
 )
