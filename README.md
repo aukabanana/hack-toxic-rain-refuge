@@ -146,7 +146,9 @@ Create a `.env` file inside the `backend` folder:
 
 ```env
 PORT=3000
+CORS_ORIGIN=http://localhost:5173
 DATABASE_URL="file:./dev.db"
+JWT_SECRET=your_secret_key_here
 ```
 
 Do not commit `.env` files to Git.
@@ -164,29 +166,11 @@ cd frontend
 npm run dev
 ```
 
-Frontend URL:
-
-```txt
-http://localhost:5173
-```
-
 ## Terminal 2: Backend
 
 ```bash
 cd backend
 npm run dev
-```
-
-Backend URL:
-
-```txt
-http://localhost:3000
-```
-
-Test backend connection:
-
-```txt
-http://localhost:3000
 ```
 
 Expected response:
@@ -347,9 +331,10 @@ The backend uses Prisma with `@prisma/adapter-libsql`.
 Prisma client configuration:
 
 ```ts
+import "dotenv/config";
+
 import { PrismaClient } from "../generated/prisma/client.js";
 import { PrismaLibSql } from "@prisma/adapter-libsql";
-import "dotenv/config";
 
 const connectionString = process.env.DATABASE_URL;
 
@@ -470,85 +455,6 @@ return res.status(500).json({
   message: "Something went wrong",
 });
 ```
-
----
-
-# Suggested API Endpoints
-
-## Authentication
-
-```txt
-POST   /api/auth/register
-POST   /api/auth/login
-POST   /api/auth/logout
-GET    /api/auth/me
-```
-
-## Communities
-
-```txt
-GET    /api/communities
-POST   /api/communities
-GET    /api/communities/:id
-PATCH  /api/communities/:id
-DELETE /api/communities/:id
-POST   /api/communities/:id/join
-POST   /api/communities/:id/members
-DELETE /api/communities/:id/members/:memberId
-```
-
-## Resources
-
-```txt
-GET    /api/resources
-POST   /api/resources
-PATCH  /api/resources/:id
-DELETE /api/resources/:id
-```
-
-## Map
-
-```txt
-GET    /api/map/zones
-POST   /api/map/zones
-PATCH  /api/map/zones/:id
-DELETE /api/map/zones/:id
-
-GET    /api/map/markers
-POST   /api/map/markers
-PATCH  /api/map/markers/:id
-DELETE /api/map/markers/:id
-```
-
-## Missions
-
-```txt
-GET    /api/missions
-POST   /api/missions
-PATCH  /api/missions/:id
-DELETE /api/missions/:id
-POST   /api/missions/recommendations
-```
-
----
-
-# Map Requirements
-
-The Toxic Zone Map uses OpenStreetMap with Leaflet and React Leaflet.
-
-Always keep OpenStreetMap attribution visible.
-
-Suggested map layers:
-
-* Safe zones
-* Toxic zones
-* Warning zones
-* Resource points
-* Mission destinations
-* Community bases
-
-Do not rely only on marker colors. Use labels, popups, legends, and risk-level text.
-
 ---
 
 # Git Workflow
@@ -579,8 +485,8 @@ git push origin <BRANCH_NAME>
 Example:
 
 ```bash
-git add src/modules/resources
-git commit -m "Add resource tracker module structure"
+git add "your_file"
+git commit -m "feat: add resource tracker module structure"
 git push origin feature/resource-tracker
 ```
 
@@ -633,25 +539,9 @@ Completed setup:
 * Lucide React installed for frontend icons
 * Feature-based module folders prepared
 
-Next development tasks:
-
-1. Finalize Prisma schema
-2. Run the first Prisma migration
-3. Create shared Axios instance
-4. Configure React Router
-5. Implement authentication
-6. Implement community management
-7. Implement resource tracker
-8. Implement Toxic Zone Map
-9. Implement mission assignment and recommendation
-
 ---
 
 # Notes
-
-This project is intended for a hackathon. Prioritize functional, understandable, and presentation-ready features.
-
-Avoid overengineering. Focus on the core survival workflow:
 
 ```txt
 Create or join a community
