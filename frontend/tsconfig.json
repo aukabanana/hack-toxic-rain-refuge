@@ -12,8 +12,10 @@
     "forceConsistentCasingInFileNames": true,
 
     "resolveJsonModule": true,
-    "sourceMap": true
+    "sourceMap": true,
+    
+    "jsx": "react-jsx" 
   },
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*.ts",],
   "exclude": ["node_modules", "dist"]
 }
