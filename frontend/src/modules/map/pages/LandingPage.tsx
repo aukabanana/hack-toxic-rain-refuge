@@ -42,8 +42,6 @@ function LandingPage() {
 
   function handleCreateCommunity(communityName: string) {
     console.log("Create community:", communityName);
-
-    // TODO: Replace with Axios POST request.
     setIsCreateCommunityModalOpen(false);
   }
 

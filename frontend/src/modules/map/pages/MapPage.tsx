@@ -3,10 +3,9 @@ import {
   useState,
 } from "react";
 
-import { LogOut } from "lucide-react";
+import Navbar from "../../../components/Navbar";
 import {
   Navigate,
-  useNavigate,
 } from "react-router-dom";
 
 import LandingMap from "../components/LandingMap";
@@ -18,23 +17,23 @@ import { getCommunityById } from "../apis/LandingPage.api";
 import type { Community } from "../types/landingPage";
 
 function MapPage() {
-  const navigate = useNavigate();
+
 
   // TODO: Replace with localStorage after create-community flow is ready.
   const communityId =
     "8dce2719-eb99-450d-a70c-01ffdc9350c7";
 
-  const userName =
-    localStorage.getItem("username") ??
-    "Unknown user";
+  // const userName =
+  //   localStorage.getItem("username") ??
+  //   "Unknown user";
 
   const [community, setCommunity] =
     useState<Community | null>(null);
 
-  const [
-    isLoadingCommunity,
-    setIsLoadingCommunity,
-  ] = useState(true);
+  // const [
+  //   isLoadingCommunity,
+  //   setIsLoadingCommunity,
+  // ] = useState(true);
 
   const [
     communityError,
@@ -68,16 +67,6 @@ function MapPage() {
     void fetchCommunity();
   }, [communityId]);
 
-  function handleLogout() {
-    localStorage.removeItem("token");
-    localStorage.removeItem("username");
-    localStorage.removeItem("userId");
-    localStorage.removeItem("communityId");
-
-    navigate("/", {
-      replace: true,
-    });
-  }
 
   if (!communityId) {
     return <Navigate to="/" replace />;
@@ -85,34 +74,12 @@ function MapPage() {
 
   return (
     <main className="min-h-screen w-full bg-(--color-off-white)">
-      <header className="flex min-h-20 flex-wrap items-center justify-between gap-4 bg-(--color-navy) px-5 py-4 sm:px-9">
-        <div>
-          <p className="rounded-xl bg-(--color-off-white) px-5 py-2 text-sm font-bold text-(--color-navy) shadow-sm sm:text-base">
-            {isLoadingCommunity
-              ? "Loading..."
-              : community?.name ??
-              "Unknown community"}
-          </p>
-        </div>
 
-        <div className="flex flex-row items-center gap-5 md:gap-10">
-          <p className="text-sm font-bold text-(--color-off-white) md:text-[24px]">
-            {userName}
-          </p>
-
-          <button
-            type="button"
-            aria-label="Logout"
-            onClick={handleLogout}
-            className="cursor-pointer rounded-lg p-2 transition hover:bg-white/10"
-          >
-            <LogOut
-              strokeWidth={3}
-              className="size-6 text-(--color-off-white)"
-            />
-          </button>
-        </div>
-      </header>
+      <Navbar
+        communityName={community?.name ?? null}
+        isAuthenticated={true}
+        onCommunityClick={() => { }}
+      />
 
       <div className="px-5 py-8 sm:px-9">
         <MapTabs />

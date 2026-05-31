@@ -7,12 +7,12 @@ interface MapTab {
 
 const MAP_TABS: MapTab[] = [
   {
-    label: "Toxic Zone Map",
+    label: "Toxic zone map",
     path: "/map",
   },
   {
-    label: "Resources Tracker",
-    path: "/resources",
+    label: "Resources dashboard",
+    path: "/dashboard",
   },
 ];
 
@@ -37,7 +37,7 @@ function MapTabs() {
             className={[
               "cursor-pointer rounded-xl px-4 py-2 text-sm font-bold transition sm:text-base",
               isActive
-                ? "bg-(--color-navy) text-(--color-off-white)"
+                ? "bg-blue-950 text-white"
                 : "text-(--color-dark) hover:bg-[rgba(var(--color-navy-rgb),0.1)]",
             ].join(" ")}
           >
