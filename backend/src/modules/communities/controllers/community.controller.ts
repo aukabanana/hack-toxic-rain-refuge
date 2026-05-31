@@ -178,3 +178,81 @@ export async function getCommunities(
     });
   }
 }
+
+export async function getUserCommunity(
+  req: Request,
+  res: Response,
+) {
+  try {
+    const { userId } = req.params;
+
+    if (typeof userId !== "string") {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid user id",
+      });
+    }
+
+    const membership =
+      await prisma.communityMember.findFirst({
+        where: {
+          userId,
+        },
+
+        select: {
+          id: true,
+          role: true,
+          joinedAt: true,
+
+          user: {
+            select: {
+              id: true,
+              username: true,
+            },
+          },
+
+          community: {
+            select: {
+              id: true,
+              name: true,
+              createdAt: true,
+              updatedAt: true,
+
+              createdBy: {
+                select: {
+                  id: true,
+                  username: true,
+                },
+              },
+            },
+          },
+        },
+      });
+
+    if (!membership) {
+      return res.status(404).json({
+        success: false,
+        message:
+          "User does not belong to any community",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: membership,
+      message:
+        "User community fetched successfully",
+    });
+  } catch (error) {
+    console.error(
+      "GET_USER_COMMUNITY_ERROR:",
+      error,
+    );
+
+    return res.status(500).json({
+      success: false,
+      message:
+        "Unable to fetch user community",
+    });
+  }
+}
