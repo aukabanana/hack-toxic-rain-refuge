@@ -1,0 +1,51 @@
+/* === Font Import === */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap");
+
+@import "tailwindcss";
+
+:root {
+    
+    --color-navy: #061668;
+    --color-navy-rgb: 6, 22, 104;
+    --color-primary: #061668;
+
+    --color-wine-red: #8F1334;
+    --color-wine-red-rgb: 143, 19, 52;
+    --color-red: #8F1334;
+
+    --color-royal-blue: #155988;
+    --color-royal-blue-rgb: 21, 89, 136;
+    --color-secondary: #155988;
+
+    /* Neutral */
+    --color-off-white: #FAFAFA;
+    --color-off-white-rgb: 250, 250, 250;
+
+    --color-dark: #1E1E1E;
+    --color-dark-rgb: 30, 30, 30;
+
+
+    --font-primary: "Inter", sans-serif;
+    --font-secondary: "Poppins", sans-serif;
+
+    --font-size-heading-1: 5rem;
+    --font-size-heading-2: 4rem;
+    --font-size-heading-3: 2.75rem;
+    --font-size-heading-4: 2.125rem;
+    --font-size-title: 1.5rem;
+    --font-size-body-1: 1.25rem;
+    --font-size-body-2: 1rem;
+    --font-size-description-1: 0.9375rem;
+    --font-size-description-2: 0.8125rem;
+    --font-size-tiny: 0.6875rem;
+
+    --font-weight-regular: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+
+    --line-height-heading: 1.15;
+    --line-height-title: 1.3;
+    --line-height-body: 1.6;
+    --line-height-description: 1.5;
+}

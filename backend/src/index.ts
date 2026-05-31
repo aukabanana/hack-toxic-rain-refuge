@@ -65,13 +65,23 @@ app.post("/api/missions", async (req: Request, res: Response) => {
 app.patch("/api/missions/:id", async (req: Request, res: Response) => {
   try {
     const missionId = req.params.id as string;
-    const { isCompleted } = req.body;
+    const { isCompleted, riskLevel } = req.body;
+    const updateData: any = {};
+    if (isCompleted !== undefined) updateData.isCompleted = isCompleted;
+    if (riskLevel !== undefined) updateData.riskLevel = riskLevel;
+
+    if (Object.keys(updateData).length === 0) {
+      return res.status(400).json({ error: "No fields to update provided" });
+    }
+
     const updatedMission = await prisma.mission.update({
       where: { id: missionId },
-      data: { isCompleted },
+      data: updateData,
     });
+
     return res.status(200).json(updatedMission);
   } catch (error) {
+    console.error("Error updating mission:", error);
     return res.status(500).json({ error: "Failed to update mission" });
   }
 });
