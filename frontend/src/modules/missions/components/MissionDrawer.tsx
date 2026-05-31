@@ -16,14 +16,19 @@ interface MissionDrawerProps {
   communityId: string;
 }
 
-export const MissionDrawer: React.FC<MissionDrawerProps> = ({ isOpen, onClose, role }) => {
+export const MissionDrawer: React.FC<MissionDrawerProps> = ({ isOpen, onClose, role, communityId, }) => {
   const [missions, setMissions] = useState<Mission[]>([]);
   const [deleteTarget, setDeleteTarget] = useState<string | null>(null);
   const [openDropdownId, setOpenDropdownId] = useState<string | null>(null);
 
   const fetchMissions = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/missions');
+      const response = await fetch(
+        `http://localhost:3000/api/missions?communityId=${communityId}`,
+        {
+          credentials: "include",
+        },
+      );
       if (response.ok) {
         const data = await response.json();
         setMissions(data);
@@ -34,12 +39,17 @@ export const MissionDrawer: React.FC<MissionDrawerProps> = ({ isOpen, onClose, r
   };
 
   useEffect(() => {
-    if (isOpen) fetchMissions();
-  }, [isOpen]);
+    if (isOpen) {
+      void fetchMissions();
+    }
+  }, [
+    isOpen,
+    communityId,
+  ]);
 
   const toggleMissionStatus = async (id: string, currentStatus: boolean) => {
     setMissions(prev => prev.map(m => m.id === id ? { ...m, isCompleted: !currentStatus } : m));
-    await fetch(`http://localhost:5000/api/missions/${id}`, {
+    await fetch(`http://localhost:3000/api/missions/${id}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ isCompleted: !currentStatus }),
@@ -49,7 +59,7 @@ export const MissionDrawer: React.FC<MissionDrawerProps> = ({ isOpen, onClose, r
   const updateMissionRisk = async (id: string, newRisk: Mission['riskLevel']) => {
     setMissions(prev => prev.map(m => m.id === id ? { ...m, riskLevel: newRisk } : m));
     setOpenDropdownId(null);
-    await fetch(`http://localhost:5000/api/missions/${id}`, {
+    await fetch(`http://localhost:3000/api/missions/${id}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ riskLevel: newRisk }),
@@ -59,7 +69,7 @@ export const MissionDrawer: React.FC<MissionDrawerProps> = ({ isOpen, onClose, r
   const handleDeleteMission = async (id: string) => {
     setMissions(prev => prev.filter(m => m.id !== id));
     setDeleteTarget(null);
-    await fetch(`http://localhost:5000/api/missions/${id}`, { method: 'DELETE' });
+    await fetch(`http://localhost:3000/api/missions/${id}`, { method: 'DELETE' });
   };
 
   const getRiskBadgeStyle = (risk: Mission['riskLevel']) => {
@@ -85,9 +95,9 @@ export const MissionDrawer: React.FC<MissionDrawerProps> = ({ isOpen, onClose, r
             missions.map((mission) => (
               <div key={mission.id} className="flex items-center gap-3 bg-white p-4 rounded-xl border shadow-sm">
                 {role === 'finder' && (
-                  <input 
-                    type="checkbox" 
-                    checked={mission.isCompleted} 
+                  <input
+                    type="checkbox"
+                    checked={mission.isCompleted}
                     onChange={() => toggleMissionStatus(mission.id, mission.isCompleted)}
                     className="w-6 h-6 rounded border-gray-300 accent-blue-900 cursor-pointer"
                   />
@@ -102,7 +112,7 @@ export const MissionDrawer: React.FC<MissionDrawerProps> = ({ isOpen, onClose, r
 
                 {role === 'scout' ? (
                   <div className="relative">
-                    <button 
+                    <button
                       onClick={() => setOpenDropdownId(openDropdownId === mission.id ? null : mission.id)}
                       className={`text-[10px] px-3 py-1 rounded-full font-bold cursor-pointer outline-none ${getRiskBadgeStyle(mission.riskLevel)}`}
                     >
@@ -110,7 +120,7 @@ export const MissionDrawer: React.FC<MissionDrawerProps> = ({ isOpen, onClose, r
                     </button>
                     <AnimatePresence>
                       {openDropdownId === mission.id && (
-                        <motion.div 
+                        <motion.div
                           initial={{ opacity: 0, y: -5 }}
                           animate={{ opacity: 1, y: 0 }}
                           exit={{ opacity: 0, y: -5 }}

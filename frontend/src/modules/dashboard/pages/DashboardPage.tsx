@@ -18,6 +18,7 @@ import {
     getUserRole,
     type Resource,
 } from '../apis/dashboard.api';
+import { MissionDrawer } from "../../missions/components/MissionDrawer";
 
 const COMMUNITY_ID = '81e62fd2-8881-4229-a932-d799a1fda240';
 const CURRENT_USER_ID = 'user-mock-12345';
@@ -49,6 +50,8 @@ export const DashboardPage: React.FC = () => {
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
     const [isCommuModalOpen, setIsCommuModalOpen] = useState(false);
     const [selectedItem, setSelectedItem] = useState<Resource | null>(null);
+
+    const [isMissionDrawerOpen, setIsMissionDrawerOpen,] = useState(false);
 
     const [userRole, setUserRole] = useState<string>('');
     const daysToSurvive = React.useMemo(() => {
@@ -90,12 +93,12 @@ export const DashboardPage: React.FC = () => {
     }, [resources]);
 
     useEffect(() => {
-    getResources(COMMUNITY_ID)
-        .then(setResources)
-        .catch(err => console.error(err));
+        getResources(COMMUNITY_ID)
+            .then(setResources)
+            .catch(err => console.error(err));
 
-    getUserRole().then(role => setUserRole(role));
-}, []);
+        getUserRole().then(role => setUserRole(role));
+    }, []);
 
     const handleCreateResource = async (name: string, type: ResourceType) => {
         try {
@@ -146,19 +149,36 @@ export const DashboardPage: React.FC = () => {
         }
     };
 
-    const isTracker = userRole.toUpperCase() === 'RESOURCE_TRACKER';
+    // const isTracker = userRole.toUpperCase() === 'RESOURCE_TRACKER';
 
+    const normalizedRole = userRole.toUpperCase();
+    const isTracker = normalizedRole === "RESOURCE_TRACKER";
+    const isScout = normalizedRole === "SCOUT";
+    const isFinder = normalizedRole === "RESOURCE_FINDER";
+    const canOpenMissionDrawer = isScout || isFinder;
+    const missionDrawerRole: "scout" | "finder" = isScout ? "scout" : "finder";
+
+    // const handleMainButtonClick = () => {
+    //     if (isTracker) {
+    //         setIsCreateModalOpen(true);
+    //     } else {
+    //         navigate('/notifications');
+    //     }
+    // };
     const handleMainButtonClick = () => {
         if (isTracker) {
             setIsCreateModalOpen(true);
-        } else {
-            navigate('/notifications');
+            return;
+        }
+
+        if (canOpenMissionDrawer) {
+            setIsMissionDrawerOpen(true);
         }
     };
 
     return (
         <div className="min-h-screen bg-gray-50 flex flex-col select-none relative">
-            <div className="w-full h-16 relative z-[9999]">
+            <div className="w-full h-16 relative z-9999">
                 <Navbar
                     communityName="Community A"
                     isAuthenticated={true}
@@ -183,7 +203,7 @@ export const DashboardPage: React.FC = () => {
                                 </p>
                             </div>
 
-                            <button
+                            {/* <button
                                 onClick={handleMainButtonClick}
                                 className="flex items-center gap-2 bg-[#0a1963] hover:bg-[#0f248a] text-white px-5 py-2.5 rounded-xl font-bold text-sm shadow-sm transition-colors cursor-pointer w-fit"
                             >
@@ -198,7 +218,27 @@ export const DashboardPage: React.FC = () => {
                                         Mission Assignments
                                     </>
                                 )}
-                            </button>
+                            </button> */}
+                            {(isTracker ||
+                                canOpenMissionDrawer) && (
+                                    <button
+                                        type="button"
+                                        onClick={handleMainButtonClick}
+                                        className="flex w-fit cursor-pointer items-center gap-2 rounded-xl bg-[#0a1963] px-5 py-2.5 text-sm font-bold text-white shadow-sm transition-colors hover:bg-[#0f248a]"
+                                    >
+                                        {isTracker ? (
+                                            <>
+                                                <Plus size={18} />
+                                                Create Resource
+                                            </>
+                                        ) : (
+                                            <>
+                                                <Bell size={18} />
+                                                Mission Assignments
+                                            </>
+                                        )}
+                                    </button>
+                                )}
                         </div>
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 justify-center items-center">
@@ -220,7 +260,7 @@ export const DashboardPage: React.FC = () => {
                 </main>
             </div>
 
-            <ConfirmDeleteModal
+            {/* <ConfirmDeleteModal
                 isOpen={isDeleteModalOpen}
                 itemName={selectedItem?.name || ''}
                 onClose={() => setIsDeleteModalOpen(false)}
@@ -239,6 +279,41 @@ export const DashboardPage: React.FC = () => {
                 currentUserId={CURRENT_USER_ID}
                 currentCommunityId={COMMUNITY_ID}
                 isTracker={isTracker}
+            /> */}
+            <ConfirmDeleteModal
+                isOpen={isDeleteModalOpen}
+                itemName={selectedItem?.name || ""}
+                onClose={() =>
+                    setIsDeleteModalOpen(false)
+                }
+                onConfirm={handleConfirmDelete}
+            />
+
+            <CreateResourceModal
+                isOpen={isCreateModalOpen}
+                onClose={() =>
+                    setIsCreateModalOpen(false)
+                }
+                onCreate={handleCreateResource}
+            />
+
+            <CommunityModal
+                isOpen={isCommuModalOpen}
+                onClose={() =>
+                    setIsCommuModalOpen(false)
+                }
+                currentUserId={CURRENT_USER_ID}
+                currentCommunityId={COMMUNITY_ID}
+                isTracker={isTracker}
+            />
+
+            <MissionDrawer
+                isOpen={isMissionDrawerOpen}
+                onClose={() =>
+                    setIsMissionDrawerOpen(false)
+                }
+                role={missionDrawerRole}
+                communityId={COMMUNITY_ID}
             />
         </div>
     );
