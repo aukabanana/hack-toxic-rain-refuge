@@ -1,13 +1,14 @@
+import './index.css'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import './index.css'
+import { DashboardRoute } from './modules/dashboard/routers/Dashboard.route.tsx'
 import App from './App.tsx'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import LandingPage from './modules/map/pages/LandingPage'
-import { mapPage } from './modules/map/routers/mapPage.router'
-import { LoginpRoute } from './modules/auth/routers/Login.route'
-import { RegisterRoute } from './modules/auth/routers/Register.route'
-import { DashboardRoute } from './modules/dashboard/routers/Dashboard.route'
+import LandingPage from './modules/map/pages/LandingPage.tsx'
+import { mapPage } from './modules/map/routers/mapPage.router.tsx'
+import { LoginpRoute } from './modules/auth/routers/Login.route.tsx'
+import { RegisterRoute } from './modules/auth/routers/Register.route.tsx'
+
 
 const router = createBrowserRouter([
   {
@@ -28,6 +29,6 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <App />
+    <RouterProvider router={router} />
   </StrictMode>,
 )
