@@ -1,7 +1,4 @@
-import {
-  useEffect,
-  useState,
-} from "react";
+import { useEffect, useState, } from "react";
 
 import {
   createMapMarker,
@@ -54,7 +51,6 @@ import type {
   MapZone,
   MarkerType,
 } from "../types/map";
-
 interface LandingMapProps {
   mode?: "landing" | "community";
   communityId?: string;
@@ -188,11 +184,25 @@ function MapClickHandler({
   return null;
 }
 
+import type { UserRole } from "../types/landingPage";
+
+interface LandingMapProps {
+  mode?: "landing" | "community";
+  communityId?: string;
+  currentUserRole?: UserRole;
+}
+
 function LandingMap({
   mode = "landing",
   communityId,
+  currentUserRole = "SURVIVOR",
 }: LandingMapProps) {
-  const isCommunityMode = mode === "community";
+  const isCommunityMode =
+    mode === "community";
+
+  const canManageMap =
+    currentUserRole === "RESOURCE_TRACKER" ||
+    currentUserRole === "SCOUT";
 
   const [markers, setMarkers] =
     useState<MapMarker[]>([]);
@@ -350,6 +360,15 @@ function LandingMap({
     }
   }
 
+  useEffect(() => {
+    if (canManageMap) return;
+
+    setIsCreateMode(false);
+    setSelectedMarkerId(null);
+    setSelectedZoneId(null);
+    setPendingMarkerPosition(null);
+  }, [canManageMap]);
+
   return (
     <section className="relative h-full min-h-[520px] w-full overflow-hidden rounded-2xl">
       <MapContainer
@@ -433,7 +452,6 @@ function LandingMap({
           );
         })}
 
-        {/* แสดง current user ทั้ง landing และ community mode */}
         <Marker
           position={[
             CURRENT_USER_LOCATION.latitude,
@@ -502,54 +520,65 @@ function LandingMap({
             </Marker>
           ))}
 
-        {isCommunityMode && (
-          <MapClickHandler
-            isCreateMode={isCreateMode}
-            onSelectPosition={handleSelectMarkerPosition}
-          />
-        )}
+        {isCommunityMode &&
+          canManageMap && (
+            <MapClickHandler
+              isCreateMode={isCreateMode}
+              onSelectPosition={
+                handleSelectMarkerPosition
+              }
+            />
+          )}
 
         <ZoomControl position="topright" />
       </MapContainer>
 
       {isCommunityMode && isCreateMode && (
-        <div className="absolute left-1/2 top-4 z-[900] -translate-x-1/2 rounded-xl bg-(--color-navy) px-4 py-2 text-sm font-bold text-white shadow-lg">
+        <div className="absolute left-1/2 top-4 z-900 -translate-x-1/2 rounded-xl bg-(--color-navy) px-4 py-2 text-sm font-bold text-white shadow-lg">
           Click a location on the map
         </div>
       )}
 
-      {isCommunityMode && (
-        <div className="absolute bottom-5 left-5 z-[900] flex flex-wrap gap-2">
-          <button
-            type="button"
-            onClick={() =>
-              setIsCreateMode((current) => !current)
-            }
-            className="cursor-pointer rounded-xl bg-white px-4 py-2 text-sm font-bold text-(--color-navy) shadow-lg transition hover:bg-slate-100"
-          >
-            {isCreateMode
-              ? "Cancel Create"
-              : "Create Marker"}
-          </button>
+      {isCommunityMode &&
+        canManageMap && (
+          <div className="absolute bottom-5 left-5 z-[900] flex flex-wrap gap-2">
+            <button
+              type="button"
+              onClick={() =>
+                setIsCreateMode(
+                  (current) => !current,
+                )
+              }
+              className="cursor-pointer rounded-xl bg-white px-4 py-2 text-sm font-bold text-(--color-navy) shadow-lg transition hover:bg-slate-100"
+            >
+              {isCreateMode
+                ? "Cancel Create"
+                : "Create Marker"}
+            </button>
 
-          <button
-            type="button"
-            disabled={!selectedMarkerId}
-            onClick={handleRemoveSelectedMarker}
-            className="cursor-pointer rounded-xl bg-(--color-wine-red) px-4 py-2 text-sm font-bold text-white shadow-lg transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            Remove Marker
-          </button>
-          <button
-            type="button"
-            disabled={!selectedZoneId}
-            onClick={handleRemoveSelectedZone}
-            className="cursor-pointer rounded-xl bg-(--color-wine-red) px-4 py-2 text-sm font-bold text-white shadow-lg transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            Remove Zone
-          </button>
-        </div>
-      )}
+            <button
+              type="button"
+              disabled={!selectedMarkerId}
+              onClick={
+                handleRemoveSelectedMarker
+              }
+              className="cursor-pointer rounded-xl bg-(--color-wine-red) px-4 py-2 text-sm font-bold text-white shadow-lg transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              Remove Marker
+            </button>
+
+            <button
+              type="button"
+              disabled={!selectedZoneId}
+              onClick={
+                handleRemoveSelectedZone
+              }
+              className="cursor-pointer rounded-xl bg-(--color-wine-red) px-4 py-2 text-sm font-bold text-white shadow-lg transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              Remove Zone
+            </button>
+          </div>
+        )}
 
       {isCommunityMode && (
         <CreateMarkerModal
