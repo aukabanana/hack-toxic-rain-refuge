@@ -3,6 +3,8 @@ import {
   createCommunity, getMyCommunity, getCommunityMembers,
   addMember, searchUsers,
   getResources, createResource, updateResourceAmount, deleteResource,
+  getUserRole,
+  getRole
 } from '../controllers/dashboard.controller.js';
 
 const router = Router();
@@ -19,5 +21,9 @@ router.get('/community/:id/resources', getResources);
 router.post('/community/:id/resources', createResource);
 router.patch('/resources/:resourceId/amount', updateResourceAmount);
 router.delete('/resources/:resourceId', deleteResource);
+
+//user
+router.get('/users', getUserRole);
+router.get('/users/:userId/role', getRole)
 
 export default router;

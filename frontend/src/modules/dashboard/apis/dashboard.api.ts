@@ -42,9 +42,19 @@ export interface Resource {
 
 // ─── Community ───────────────────────────────────────────
 
+// export async function createCommunity(name: string): Promise<Community> {
+//   try {
+//     const res = await api.post<Community>('/community', { name });
+//     return res.data;
+//   } catch (err) {
+//     throw new Error(errorMessage(err), { cause: err });
+//   }
+// }
+// dashboard.api.ts
 export async function createCommunity(name: string): Promise<Community> {
+  const userId = localStorage.getItem('userId') || '';
   try {
-    const res = await api.post<Community>('/community', { name });
+    const res = await api.post<Community>('/community', { name, userId });
     return res.data;
   } catch (err) {
     throw new Error(errorMessage(err), { cause: err });
@@ -120,5 +130,32 @@ export async function deleteResource(resourceId: string): Promise<void> {
     await api.delete(`/resources/${resourceId}`);
   } catch (err) {
     throw new Error(errorMessage(err), { cause: err });
+  }
+}
+
+export interface UserRoleData {
+    username: string;
+    telephone: string;
+    role: string;
+}
+
+export async function getAlluserRole(): Promise<UserRoleData[]> {
+    try {
+        const res = await api.get<UserRoleData[]>(`/users`);
+        return res.data; 
+        
+    } catch (err) {
+        throw new Error(errorMessage(err), { cause: err });
+    }
+}
+
+export async function getUserRole(): Promise<string> {
+  const userId = localStorage.getItem('userId') || '';
+  try {
+    const res = await api.get<{ role: string }>(`/users/${userId}/role`);
+    return res.data.role;
+  } catch (err) {
+    console.log(err)
+    return 'SURVIVOR';
   }
 }

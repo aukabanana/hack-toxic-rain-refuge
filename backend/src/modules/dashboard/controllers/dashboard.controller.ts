@@ -1,6 +1,8 @@
 import type { Request, Response } from 'express';
 import prisma from '../../../lib/prisma.js';
 import { ResourceType } from '../../../generated/prisma/index.js';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
 type MemberWithUser = {
   id: string;
@@ -18,32 +20,49 @@ type MemberWithUser = {
 
 // ─── Community ───────────────────────────────────────────
 
+// export const createCommunity = async (req: Request, res: Response) => {
+//   const { name, userId } = req.body as { name: string; userId: string };
+//   if (!name) return res.status(400).json({ message: 'name required' });
+
+//   const community = await prisma.community.create({ data: { name } });
+  
+//   if (userId) {
+//     await prisma.communityMember.create({
+//       data: { userId, communityId: community.id, role: 'RESOURCE_TRACKER' },
+//     });
+//   }
+
+//   return res.status(201).json(community);
+// };
+
 export const createCommunity = async (req: Request, res: Response) => {
   const { name, userId } = req.body as { name: string; userId: string };
   if (!name) return res.status(400).json({ message: 'name required' });
 
-  const community = await prisma.community.create({ data: { name } });
-  
+  const community = await prisma.community.create({ 
+    data: { 
+      name,
+      ...(userId && { createdById: userId }) 
+    } 
+  });
+
   if (userId) {
+    // เพิ่มเป็น member
     await prisma.communityMember.create({
-      data: { userId, communityId: community.id, role: 'RESOURCE_TRACKER' },
+      data: { userId, communityId: community.id, role: 'RESOURCE_TRACKER' }, 
+    });
+
+    // เปลี่ยน role ใน User table ด้วย
+    await prisma.user.update({
+      where: { id: userId },
+      data: { role: 'RESOURCE_TRACKER' },
     });
   }
 
   return res.status(201).json(community);
 };
 
-// export const getMyCommunity = async (req: Request, res: Response) => {
-//   const { userId } = req.query as { userId: string };
-//   if (!userId) return res.status(400).json({ message: 'userId required' });
 
-//   const membership = await prisma.communityMember.findFirst({
-//     where: { userId },
-//     include: { community: true },
-//   });
-//   if (!membership) return res.status(404).json({ message: 'No community found' });
-//   return res.json(membership.community);
-// };
 
 export const getMyCommunity = async (req: Request, res: Response) => {
   const { userId } = req.query as { userId: string };
@@ -163,4 +182,80 @@ export const createResource = async (req: Request, res: Response) => {
     data: { name, type: type as ResourceType, amount, unit: '', communityId: id as string },
   });
   return res.status(201).json(resource);
+};
+
+
+export const getUserRole = async (req: Request, res: Response) => {
+    try {
+        const allRoleUser = await prisma.user.findMany({
+            select: {
+                username: true,
+                telephone: true,
+                role: true,
+            }
+        });
+        return res.status(200).json(allRoleUser);
+        
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ 
+            message: 'Internal server error' 
+        });
+    }
+};
+
+
+
+// export const getMe = async (req: Request, res: Response) => {
+//   try {
+//     const token = req.cookies?.token; 
+//     if (!token) return res.status(401).json({ message: "Unauthorized" });
+//     const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { id: string };
+//     const user = await prisma.user.findUnique({
+//       where: { id: decoded.id },
+//       select: {
+//         id: true,
+//         username: true,
+//         telephone: true,
+
+//         memberships: {
+//           select: {
+//             communityId: true,
+//             role: true
+//           }
+//         }
+//       }
+//     });
+
+//     if (!user) return res.status(404).json({ message: "User not found" });
+
+//     return res.status(200).json({
+//       id: user.id,
+//       username: user.username,
+//       telephone: user.telephone,
+//       currentCommunityId: user.memberships[0]?.communityId || null, 
+//       roleInCommunity: user.memberships[0]?.role || 'SURVIVOR'
+//     });
+
+//   } catch (err) {
+//     return res.status(401).json({ message: "Invalid token" });
+//   }
+// };
+
+
+
+export const getRole = async (req: Request, res: Response) => {
+  const userId = req.params['userId'] as string
+  if (!userId) return res.status(400).json({ message: 'userId required' });
+
+  try {
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { role: true },
+    });
+    if (!user) return res.status(404).json({ message: 'User not found' });
+    return res.status(200).json({ role: user.role });
+  } catch (err) {
+    return res.status(500).json({ message: 'Internal server error' });
+  }
 };

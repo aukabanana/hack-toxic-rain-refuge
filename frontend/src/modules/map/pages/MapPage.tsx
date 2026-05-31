@@ -7,7 +7,6 @@ import axios from "axios";
 import { LogOut } from "lucide-react";
 import {
   Navigate,
-  useNavigate,
 } from "react-router-dom";
 
 import LandingMap from "../components/LandingMap";
@@ -23,7 +22,7 @@ import type {
 } from "../types/landingPage";
 
 function MapPage() {
-  const navigate = useNavigate();
+
 
   const userId =
     localStorage.getItem("userId");
@@ -102,16 +101,6 @@ function MapPage() {
     void fetchMembership();
   }, [navigate, userId]);
 
-  function handleLogout() {
-    localStorage.removeItem("token");
-    localStorage.removeItem("username");
-    localStorage.removeItem("userId");
-    localStorage.removeItem("communityId");
-
-    navigate("/", {
-      replace: true,
-    });
-  }
 
   if (!userId) {
     return (
@@ -167,19 +156,11 @@ function MapPage() {
             {userName}
           </p>
 
-          <button
-            type="button"
-            aria-label="Logout"
-            onClick={handleLogout}
-            className="cursor-pointer rounded-lg p-2 transition hover:bg-white/10"
-          >
-            <LogOut
-              strokeWidth={3}
-              className="size-6 text-(--color-off-white)"
-            />
-          </button>
-        </div>
-      </header>
+      <Navbar
+        communityName={community?.name ?? null}
+        isAuthenticated={true}
+        onCommunityClick={() => { }}
+      />
 
       <div className="px-5 py-8 sm:px-9">
         <MapTabs />
