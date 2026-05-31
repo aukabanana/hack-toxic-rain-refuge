@@ -562,7 +562,7 @@ function LandingMap({
               onClick={
                 handleRemoveSelectedMarker
               }
-              className="cursor-pointer rounded-xl bg-(--color-wine-red) px-4 py-2 text-sm font-bold text-white shadow-lg transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-50"
+              className="cursor-pointer rounded-xl bg-red-900 px-4 py-2 text-sm font-bold text-white shadow-lg transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-50"
             >
               Remove Marker
             </button>
@@ -573,7 +573,7 @@ function LandingMap({
               onClick={
                 handleRemoveSelectedZone
               }
-              className="cursor-pointer rounded-xl bg-(--color-wine-red) px-4 py-2 text-sm font-bold text-white shadow-lg transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-50"
+              className="cursor-pointer rounded-xl bg-red-900 px-4 py-2 text-sm font-bold text-white shadow-lg transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-50"
             >
               Remove Zone
             </button>

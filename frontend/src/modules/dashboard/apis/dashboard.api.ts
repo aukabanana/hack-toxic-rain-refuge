@@ -159,3 +159,12 @@ export async function getUserRole(): Promise<string> {
     return 'SURVIVOR';
   }
 }
+
+
+export async function updateMemberRole(communityId: string, userId: string, role: string): Promise<void> {
+  try {
+    await api.patch(`/community/${communityId}/members/${userId}`, { role });
+  } catch (err) {
+    throw new Error(errorMessage(err), { cause: err });
+  }
+}

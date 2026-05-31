@@ -248,7 +248,7 @@ const CommunityModal: React.FC<CommunityModalProps> = ({
                                     className="flex items-center gap-1.5 px-6 py-2.5 text-sm font-bold text-white bg-[#1a1f2c] hover:bg-[#2d3748] rounded-xl shadow-md transition-all cursor-pointer"
                                 >
                                     <Plus size={16} />
-                                    <span>เพิ่มสมาชิก</span>
+                                    <span>Add member</span>
                                 </button>
                             </div>
                         )}
