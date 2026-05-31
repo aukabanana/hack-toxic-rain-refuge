@@ -19,6 +19,7 @@ import type {
   LandingPageRouteConfig,
   UserCommunityMembership,
 } from "../types/landingPage";
+import MapTabs from "../components/MapTabs";
 
 const ROUTES: LandingPageRouteConfig = {
   login: "/login",
@@ -255,15 +256,18 @@ function LandingPage() {
           )}
         </header>
 
+        <div className='w-fit mx-15 mt-10'><MapTabs /></div>
+
         {communityError && (
           <div className="mx-4 mt-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-semibold text-red-700 sm:mx-6 lg:mx-10">
             {communityError}
           </div>
         )}
 
+        
         <div className="relative flex flex-1 p-4 sm:p-6 lg:p-10">
           <div className="min-h-[520px] w-full">
-            <LandingMap mode="landing" />
+            <LandingMap mode={isAuthenticated ? "community" : "landing"} />
           </div>
 
           {!haveCommunity &&

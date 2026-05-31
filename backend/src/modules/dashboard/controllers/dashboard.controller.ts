@@ -45,6 +45,7 @@ export const createCommunity = async (req: Request, res: Response) => {
       ...(userId && { createdById: userId }) 
     } 
   });
+  print()
 
   if (userId) {
     // เพิ่มเป็น member
@@ -166,20 +167,37 @@ export const deleteResource = async (req: Request, res: Response) => {
   return res.json({ message: 'Deleted' });
 };
 
+// export const createResource = async (req: Request, res: Response) => {
+//   const id = req.params['id'];
+//   if (!id) return res.status(400).json({ message: 'Community ID required' });
+
+//   const { name, type, amount } = req.body as { name: string; type: string; amount: number };
+//   if (!name || !type || !amount)
+//     return res.status(400).json({ message: 'name, type, amount required' });
+
+//   const validTypes = Object.values(ResourceType);
+//   if (!validTypes.includes(type as ResourceType))
+//     return res.status(400).json({ message: 'Invalid resource type' });
+
+//   const resource = await prisma.resource.create({
+//     data: { name, type: type as ResourceType, amount, unit: '', communityId: id as string },
+//   });
+//   return res.status(201).json(resource);
+// };
 export const createResource = async (req: Request, res: Response) => {
   const id = req.params['id'];
   if (!id) return res.status(400).json({ message: 'Community ID required' });
 
-  const { name, type, amount } = req.body as { name: string; type: string; amount: number };
-  if (!name || !type || !amount)
-    return res.status(400).json({ message: 'name, type, unit required' });
+  const { name, type } = req.body as { name: string; type: string };
+  if (!name || !type)
+    return res.status(400).json({ message: 'name, type required' });
 
   const validTypes = Object.values(ResourceType);
   if (!validTypes.includes(type as ResourceType))
     return res.status(400).json({ message: 'Invalid resource type' });
 
   const resource = await prisma.resource.create({
-    data: { name, type: type as ResourceType, amount, unit: '', communityId: id as string },
+    data: { name, type: type as ResourceType, amount: 0, unit: '', communityId: id as string },
   });
   return res.status(201).json(resource);
 };
@@ -205,45 +223,6 @@ export const getUserRole = async (req: Request, res: Response) => {
 };
 
 
-
-// export const getMe = async (req: Request, res: Response) => {
-//   try {
-//     const token = req.cookies?.token; 
-//     if (!token) return res.status(401).json({ message: "Unauthorized" });
-//     const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { id: string };
-//     const user = await prisma.user.findUnique({
-//       where: { id: decoded.id },
-//       select: {
-//         id: true,
-//         username: true,
-//         telephone: true,
-
-//         memberships: {
-//           select: {
-//             communityId: true,
-//             role: true
-//           }
-//         }
-//       }
-//     });
-
-//     if (!user) return res.status(404).json({ message: "User not found" });
-
-//     return res.status(200).json({
-//       id: user.id,
-//       username: user.username,
-//       telephone: user.telephone,
-//       currentCommunityId: user.memberships[0]?.communityId || null, 
-//       roleInCommunity: user.memberships[0]?.role || 'SURVIVOR'
-//     });
-
-//   } catch (err) {
-//     return res.status(401).json({ message: "Invalid token" });
-//   }
-// };
-
-
-
 export const getRole = async (req: Request, res: Response) => {
   const userId = req.params['userId'] as string
   if (!userId) return res.status(400).json({ message: 'userId required' });
@@ -258,4 +237,48 @@ export const getRole = async (req: Request, res: Response) => {
   } catch (err) {
     return res.status(500).json({ message: 'Internal server error' });
   }
+};
+
+
+type UserRoleType = 'RESOURCE_TRACKER' | 'RESOURCE_FINDER' | 'SCOUT' | 'SURVIVOR';
+
+
+// export const updateCommuRole = async (req: Request, res: Response) => {
+//   const communityId = req.params['communityId'] as string;
+//   const userId = req.params['userId'] as string;
+//   const { role } = req.body as { role: string };
+
+//   await prisma.communityMember.update({
+//     where: { userId_communityId: { userId, communityId } },
+//     data: { role: role as any },
+//   });
+
+//   await prisma.user.update({
+//     where: { id: userId },
+//     data: { role: role as any },
+//   });
+
+//   return res.json({ message: 'Role updated' });
+// };
+
+
+
+
+export const updateMemberRole = async (req: Request, res: Response) => {
+  const userId = req.params['userId'] as string;
+  const { role } = req.body as { role: string };
+
+  if (!role) return res.status(400).json({ message: 'role required' });
+
+  await prisma.communityMember.updateMany({
+    where: { userId },
+    data: { role: role as UserRoleType},
+  });
+
+  await prisma.user.update({
+    where: { id: userId },
+    data: { role: role as UserRoleType },
+  });
+
+  return res.json({ message: 'Role updated' });
 };

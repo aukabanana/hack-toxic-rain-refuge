@@ -46,7 +46,7 @@ const ConfirmDeleteModal: React.FC<ConfirmDeleteModalProps> = ({
         <div className="flex flex-col w-full gap-3">
           <button
             onClick={onConfirm}
-            className="w-full py-3 bg-(--color-red) hover:bg-red-700 text-white rounded-xl font-bold transition-colors shadow-lg cursor-pointer"
+            className="w-full py-3 bg-red-950 hover:bg-red-700 text-white rounded-xl font-bold transition-colors shadow-lg cursor-pointer"
           >
             Yes, Delete it
           </button>

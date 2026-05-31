@@ -7,12 +7,14 @@ import Navbar from '../../../components/Navbar';
 import { loginUser } from '../apis/auth.api';
 import { getMyCommunity } from '../../dashboard/apis/dashboard.api';
 
+
 export const LoginPage1: React.FC = () => {
     const navigate = useNavigate();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
+
 
 
     const handleLoginSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -28,7 +30,7 @@ export const LoginPage1: React.FC = () => {
                 localStorage.setItem('communityName', community.name);
             }
 
-            navigate('/map');
+            navigate('/dashboard');
         } catch (err: unknown) {
             if (err instanceof Error) setError(err.message);
         } finally {

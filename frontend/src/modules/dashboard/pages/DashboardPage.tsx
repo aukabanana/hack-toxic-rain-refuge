@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Bell } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
 import {
     Plus, Beef, Droplets, Pill, Hammer,
-    Fuel, HardHat, HelpCircle, LucideIcon
+    Fuel, HardHat, HelpCircle, LucideIcon, 
 } from 'lucide-react';
 import MapTabs from '../../map/components/MapTabs'
+
 
 import Navbar from '../../../components/Navbar';
 import ResourceCard from '../components/ResourceCard';
@@ -44,7 +44,7 @@ const unitMapping: Record<ResourceType, string> = {
 };
 
 export const DashboardPage: React.FC = () => {
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
     const [resources, setResources] = useState<Resource[]>([]);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
@@ -55,7 +55,7 @@ export const DashboardPage: React.FC = () => {
 
     const [userRole, setUserRole] = useState<string>('');
     const daysToSurvive = React.useMemo(() => {
-        const memberCount = 1;
+        const memberCount = 3;
 
         const totalWater = resources
             .filter(r => r.type === 'WATER')
@@ -66,9 +66,9 @@ export const DashboardPage: React.FC = () => {
             .reduce((sum, r) => sum + r.amount, 0);
 
         const daysFromWater = totalWater / (memberCount * 2);
-        const daysFromFood = totalFood / (memberCount * 3);
+        const daysFromFood = totalFood / (memberCount * 1);
 
-        const minDays = Math.min(daysFromWater, daysFromFood);
+        const minDays = Math.min(daysFromWater,daysFromFood);
 
         return Math.floor(minDays);
     }, [resources]);
@@ -176,6 +176,8 @@ export const DashboardPage: React.FC = () => {
         }
     };
 
+
+
     return (
         <div className="min-h-screen bg-gray-50 flex flex-col select-none relative">
             <div className="w-full h-16 relative z-9999">
@@ -260,26 +262,6 @@ export const DashboardPage: React.FC = () => {
                 </main>
             </div>
 
-            {/* <ConfirmDeleteModal
-                isOpen={isDeleteModalOpen}
-                itemName={selectedItem?.name || ''}
-                onClose={() => setIsDeleteModalOpen(false)}
-                onConfirm={handleConfirmDelete}
-            />
-
-            <CreateResourceModal
-                isOpen={isCreateModalOpen}
-                onClose={() => setIsCreateModalOpen(false)}
-                onCreate={handleCreateResource}
-            />
-
-            <CommunityModal
-                isOpen={isCommuModalOpen}
-                onClose={() => setIsCommuModalOpen(false)}
-                currentUserId={CURRENT_USER_ID}
-                currentCommunityId={COMMUNITY_ID}
-                isTracker={isTracker}
-            /> */}
             <ConfirmDeleteModal
                 isOpen={isDeleteModalOpen}
                 itemName={selectedItem?.name || ""}

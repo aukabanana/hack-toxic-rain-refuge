@@ -5,11 +5,12 @@ import type {
   MarkerType,
   RiskLevel,
 } from "../types/map";
+import { number } from "framer-motion";
 
 interface CreateMarkerModalProps {
   isOpen: boolean;
-  latitude: number | null;
-  longitude: number | null;
+  latitude: number ;
+  longitude: number ;
   onClose: () => void;
   onCreate: (payload: CreateMapMarkerPayload) => void;
 }
@@ -93,7 +94,9 @@ function CreateMarkerModal({
       name: normalizedName,
       type,
       riskLevel,
-      description: description.trim() || undefined,
+      description: description.trim() || "",
+      latitude,
+      longitude
     });
 
     resetForm();

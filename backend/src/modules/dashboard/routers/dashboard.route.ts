@@ -4,7 +4,8 @@ import {
   addMember, searchUsers,
   getResources, createResource, updateResourceAmount, deleteResource,
   getUserRole,
-  getRole
+  getRole,
+  updateMemberRole
 } from '../controllers/dashboard.controller.js';
 
 const router = Router();
@@ -25,5 +26,10 @@ router.delete('/resources/:resourceId', deleteResource);
 //user
 router.get('/users', getUserRole);
 router.get('/users/:userId/role', getRole)
+
+//role
+// router.patch('/community/:communityId/members/:userId', updateMemberRole);
+router.patch('/users/:userId/role', updateMemberRole);
+
 
 export default router;
