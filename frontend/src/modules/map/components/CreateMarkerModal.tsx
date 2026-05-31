@@ -230,7 +230,7 @@ function CreateMarkerModal({
             <button
               type="submit"
               disabled={!name.trim()}
-              className="cursor-pointer rounded-xl bg-(--color-navy) px-5 py-2 text-sm font-bold text-white transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-50"
+              className="cursor-pointer rounded-xl bg-blue-950 px-5 py-2 text-sm font-bold text-white transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-50"
             >
               Create
             </button>

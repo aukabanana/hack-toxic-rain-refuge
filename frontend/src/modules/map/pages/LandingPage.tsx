@@ -205,7 +205,7 @@ function LandingPage() {
                 navigate("/map");
               }
             }}
-            className="rounded-xl bg-(--color-off-white) px-5 py-2 text-sm font-bold text-(--color-navy) shadow-sm sm:text-base"
+            className="rounded-xl bg-white px-5 py-2 text-sm font-bold text-(--color-navy) shadow-sm sm:text-base"
           >
             {isLoadingCommunity
               ? "Loading..."
